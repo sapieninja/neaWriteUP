@@ -90,7 +90,34 @@ There exist a plethora of route finding services for finding the shortest route 
     \label{route}
 \end{figure}
 However many of these route finding applications don't take into account safety. This is shown in Figure \ref{route} which shows the route Google Maps suggests that I cycle to school by. The route includes the A4, which is a very dangerous stretch of road for cyclists as it is a 3 lane road. 
-My plan is to combine accident statistics with traffic data to work out which roads are dangerous and then avoid them. 
-\section{Problem Solutions}
+My plan is to combine accident statistics with traffic data to work out which roads are dangerous and then avoid them (finding the least dangerous instead of the shortest route).
+\section{Client}
+The client is me because I am personally not a fan of being involved in cycling accidents
+\section{Features}
+\subsection{Map data}
+I need a data source which can provide data on roads that are legal to cycle on as well as being freely available for me to use. I settled on Open Street Map, a project which combines data gathered by volunteers into one massive freely available map. The map is downloadable in the form of a large XML file or PBF file. A PBF file is just a binary version of the same thing. I could write code to parse this myself, but instead I think that I am going to use the library libosmium
+which works in C++.
+\subsection{Accident Data}
+\begin{figure}
+    \begin{center}
+        \begin{tikzpicture}[scale=1]
+        \draw[gray, thick] (-4,0) -- (4,0);
+        \draw[gray, thick] (0,-4) -- (0,4);
+        \filldraw[black] (0,0) circle (2pt) node[anchor=west]{};
+        \filldraw[black] (0,2) circle (2pt) node[anchor=west]{};
+        \filldraw[black] (2,0) circle (2pt) node[anchor=west]{};
+        \filldraw[black] (-2,0) circle (2pt) node[anchor=west]{};
+        \filldraw[black] (0,-2) circle (2pt) node[anchor=west]{};
+    \end{tikzpicture}
+\end{center}
+    \caption{Typical OSM representation of an intersection}
+    \label{intersection}
+\end{figure}
+Transport for London has an excellent API which you can download accident data from. The data comes in JSON files and contains information about what type of vehicle was involved in each accident, the severity, and the coordinates of the accident. 
+I need to find a way of mapping the coordinates onto the road network so that the danger of roads can be calculated as accurately as possible. Originally I was looking at adding the accident to the nearest edge in the graph but I decided against this after considering how intersections 
+are typically represented in OSM. Road intersections typically look something like what is represented in Figure \ref{intersection}. If an accident were to occur at the intersection it would end up being added to one of the segments leading into the intersection, so the danger would not be properly calculated if not passing through that segment. Instead I thought about adding the danger to the nearest node, so that the accident would always be counted when a route passes through that intersection.
+\subsection{Traffic Data}
+The main problem with this is that the accident data is absolute and can thus not be used to calculate probabilities. For example, more accidents happen on King's Street than the dangerous road I showed earlier, but this doesn't mean that King's Street is more dangerous merely that more cyclists travel on it. This means that I need to get accurate cyclist traffic data for the whole of London in order to turn my accident statistics into accident probabilities.
+The Department for Transport and the Office for National Statistics both keep data on traffic, but it isn't applicable because cycle data is only given as a total \footnote{0.6 billion miles per year in London}
 \label{end}
 \end{document}
