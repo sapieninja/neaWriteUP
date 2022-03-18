@@ -19,6 +19,32 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global}
+    \entry{geojsondefinition}{online}{}
+      \name{author}{1}{}{%
+        {{hash=0a32107ac4a83e90ce9ad1fe3dc110dd}{%
+           family={developers},
+           familyi={d\bibinitperiod},
+           given={GeoJSON},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{fullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{bibnamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{authorbibnamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{authornamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{authorfullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \field{sortinit}{d}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{GeoJSON website}
+      \verb{urlraw}
+      \verb https://geojson.org/
+      \endverb
+      \verb{url}
+      \verb https://geojson.org/
+      \endverb
+    \endentry
     \entry{dom4jsite}{online}{}
       \name{author}{1}{}{%
         {{hash=9a64b91c4b46ccf0e89e674bedd43c21}{%
@@ -32,7 +58,7 @@
       \strng{authornamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
       \strng{authorfullhash}{9a64b91c4b46ccf0e89e674bedd43c21}
       \field{sortinit}{d}
-      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{dom4j documentation site}
@@ -56,7 +82,7 @@
       \strng{authornamehash}{8647726d4ec2df6cff16c19b3622ca25}
       \strng{authorfullhash}{8647726d4ec2df6cff16c19b3622ca25}
       \field{sortinit}{g}
-      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Open Street Map mirror}
@@ -82,7 +108,7 @@
       \strng{authornamehash}{1c74bd99a5a59e205d1f45582f687d96}
       \strng{authorfullhash}{1c74bd99a5a59e205d1f45582f687d96}
       \field{sortinit}{L}
-      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 17.03.2022)}
@@ -108,7 +134,7 @@
       \strng{authornamehash}{7ff49301e4895b7a1c9a5adb195c8294}
       \strng{authorfullhash}{7ff49301e4895b7a1c9a5adb195c8294}
       \field{sortinit}{s}
-      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{GeoJSON download site}
@@ -133,8 +159,9 @@
       \strng{authorbibnamehash}{911eeffdcc6d74a689b677b74ceda544}
       \strng{authornamehash}{911eeffdcc6d74a689b677b74ceda544}
       \strng{authorfullhash}{911eeffdcc6d74a689b677b74ceda544}
+      \field{extraname}{1}
       \field{sortinit}{W}
-      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 17.03.2022)}
@@ -144,6 +171,35 @@
       \endverb
       \verb{url}
       \verb https://wiki.openstreetmap.org/wiki/Elements
+      \endverb
+      \keyw{OSM,WIKI}
+    \endentry
+    \entry{osmhighwayspage}{online}{}
+      \name{author}{1}{}{%
+        {{hash=911eeffdcc6d74a689b677b74ceda544}{%
+           family={Wiki},
+           familyi={W\bibinitperiod},
+           given={Open\bibnamedelimb Street\bibnamedelima Map},
+           giveni={O\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{911eeffdcc6d74a689b677b74ceda544}
+      \strng{fullhash}{911eeffdcc6d74a689b677b74ceda544}
+      \strng{bibnamehash}{911eeffdcc6d74a689b677b74ceda544}
+      \strng{authorbibnamehash}{911eeffdcc6d74a689b677b74ceda544}
+      \strng{authornamehash}{911eeffdcc6d74a689b677b74ceda544}
+      \strng{authorfullhash}{911eeffdcc6d74a689b677b74ceda544}
+      \field{extraname}{2}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{addendum}{(accessed: 18.03.2022)}
+      \field{title}{Open Street Map Wiki Key:highway Page}
+      \verb{urlraw}
+      \verb https://wiki.openstreetmap.org/wiki/Key:highway
+      \endverb
+      \verb{url}
+      \verb https://wiki.openstreetmap.org/wiki/Key:highway
       \endverb
       \keyw{OSM,WIKI}
     \endentry

@@ -2347,9 +2347,12 @@
     <bcf:citekey order="1">tflapi</bcf:citekey>
     <bcf:citekey order="2">tflapi</bcf:citekey>
     <bcf:citekey order="3">geofabrik</bcf:citekey>
-    <bcf:citekey order="4">geojsonsource</bcf:citekey>
-    <bcf:citekey order="5">osmwikipage</bcf:citekey>
-    <bcf:citekey order="6">dom4jsite</bcf:citekey>
+    <bcf:citekey order="4">geojsondefinition</bcf:citekey>
+    <bcf:citekey order="5">geojsonsource</bcf:citekey>
+    <bcf:citekey order="6">osmwikipage</bcf:citekey>
+    <bcf:citekey order="7">dom4jsite</bcf:citekey>
+    <bcf:citekey order="8">osmhighwayspage</bcf:citekey>
+    <bcf:citekey order="9">osmhighwayspage</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nty">

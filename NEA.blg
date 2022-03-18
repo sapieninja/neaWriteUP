@@ -1,15 +1,15 @@
 [0] Config.pm:311> INFO - This is Biber 2.16
 [0] Config.pm:314> INFO - Logfile is 'NEA.blg'
-[48] biber:340> INFO - === Thu Mar 17, 2022, 23:16:55
-[57] Biber.pm:415> INFO - Reading 'NEA.bcf'
-[105] Biber.pm:952> INFO - Found 5 citekeys in bib section 0
-[115] Biber.pm:4340> INFO - Processing section 0
-[121] Biber.pm:4531> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
-[122] bibtex.pm:1689> INFO - LaTeX decoding ...
-[124] bibtex.pm:1494> INFO - Found BibTeX data source 'bibliography.bib'
-[142] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[143] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[143] Biber.pm:4168> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
-[143] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-US'
-[148] bbl.pm:654> INFO - Writing 'NEA.bbl' with encoding 'UTF-8'
-[149] bbl.pm:757> INFO - Output to NEA.bbl
+[70] biber:340> INFO - === Fri Mar 18, 2022, 15:18:42
+[82] Biber.pm:415> INFO - Reading 'NEA.bcf'
+[142] Biber.pm:952> INFO - Found 7 citekeys in bib section 0
+[152] Biber.pm:4340> INFO - Processing section 0
+[160] Biber.pm:4531> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
+[161] bibtex.pm:1689> INFO - LaTeX decoding ...
+[165] bibtex.pm:1494> INFO - Found BibTeX data source 'bibliography.bib'
+[191] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[191] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[191] Biber.pm:4168> INFO - Sorting list 'nty/global//global/global' of type 'entry' with template 'nty' and locale 'en-US'
+[192] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-US'
+[199] bbl.pm:654> INFO - Writing 'NEA.bbl' with encoding 'UTF-8'
+[202] bbl.pm:757> INFO - Output to NEA.bbl

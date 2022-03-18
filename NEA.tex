@@ -13,7 +13,9 @@
 \usepackage{amssymb}
 \usepackage{fancyhdr}
 \usepackage{multicol}
+\usepackage{dirtytalk}
 \usepackage{enumitem}
+\usepackage{array}
 \pagestyle{fancy}
 \fancyhf{}
 \setlength{\headheight}{15.2pt}
@@ -86,7 +88,7 @@
   ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Any, Unit, Nothing},
   ndkeywordstyle={\color{orange}\bfseries},
   sensitive=true,
-  stringstyle={\color{green}\ttfamily},
+  stringstyle={\color{codegreen}\ttfamily},
 }
 
 \lstset{style=mystyle}
@@ -112,7 +114,7 @@
 
     \vspace*{100pt}
 
-    \textbf{\Huge{NEA}}
+    \textbf{\Huge{Max Bowman NEA}}
 
     \vspace{40pt}
 
@@ -120,9 +122,11 @@
 
     \vspace{60pt}
 
-    {\small \textit{Last updated \today}}
+    {\small Last updated \today}
 
-    {\small \textit{Pages: \pagedifference{start}{end}}}
+    {\small Pages: \pagedifference{start}{end}}
+    
+    {\small Written in \LaTeX}
 
 \end{center}
 \newpage
@@ -230,7 +234,7 @@ This preprocessing will take a long time, but when completed it will significant
     \caption{Rough idea of the class diagram I will use}
     \label{Class Diagram Simple}
 \end{figure}
-As seen in Figure \ref{Class Diagram Simple}, I will use 3 major classes which will deal with parsing, storing, and preprocessing Graph data respectively. These will be linked by object composition
+As seen in Figure \ref{Class Diagram Simple}, I think I will use 3 major classes which will deal with parsing, storing, and preprocessing Graph data respectively. These will be linked by object composition
 rather than inheritance. Where possible I will use private fields and methods. 
 \subsection{Critical Path}
 \begin{itemize} 
@@ -386,13 +390,13 @@ the PBF file into a Graph, but the main library for that did not work. So instea
 \paragraph{Getting the relevant file}
 Openstreetmap has an API for requesting parts of the map, but it does not allow requesting large areas, such as the whole of London. There are many mirrors from which you can download large parts of the world. I decided to use geofabrik \cite{geofabrik}
  because it allows you to download single countries. Next I extracted London from this dataset. This is not strictly necessary, as my program can still deal with large areas such as the whole of the UK, but it does not have accident data for such an area.
- Furhtermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
+ Furhtermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON\cite{geojsondefinition} file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
  of the M25 boundary, and used the following command\footnote{I used the OSM manipulation tool Osmium} to cut out London: 
  \begin{verbatim}
      $osmium extract -p course_m25_boundary.json united_kingdom.osm.pbf -o london.osm
  \end{verbatim}
  This file could be used by my program, as it intelligently avoids parsing non-routable ways, but I decided to further reduce the file size by removing all nodes and ways that were not part of highways.
- This was again just for Quality of Life, as it makes parsing the file much faster.
+ This was just for quality of life, as it makes parsing the file much faster.
  \begin{verbatim}
     $osmium tags-filter london.osm nw/highway -o ways.osm
  \end{verbatim}
@@ -430,9 +434,76 @@ Open Street Map files are built out of 3 main elements \cite{osmwikipage}:
 All of these elements can also contain additional information on what type of node or way it is, as well as a unique id. 
 As I only care about nodes that are part of roads I can ignore the relation element completely. In a \texttt{.osm} file, the nodes all come first. This means that I can parse the nodes, 
 and then figure out how all the nodes are connected using the ways.\\
+\begin{figure}[h]
+    \begin{lstlisting}[language=XML]
+<way id="1202" version="32" timestamp="2019-05-15T08:24:07Z" uid="7105697" user="_Garrison_" changeset="70264933">
+    <nd ref="5335693253"/>
+    <nd ref="5335693250"/>
+    <nd ref="104429"/>
+    <nd ref="3330244696"/>
+    <nd ref="5335691516"/>
+    <tag k="bicycle" v="no"/>
+    <tag k="foot" v="no"/>
+    <tag k="highway" v="trunk"/>
+    <tag k="horse" v="no"/>
+    <tag k="lanes" v="3"/>
+    <tag k="lit" v="yes"/>
+    <tag k="maxspeed" v="40 mph"/>
+    <tag k="maxspeed:enforcement" v="average"/>
+    <tag k="name" v="North Circular Road"/>
+    <tag k="oneway" v="yes"/>
+    <tag k="operator" v="Transport for London"/>
+    <tag k="ref" v="A406"/>
+    <tag k="sidewalk" v="none"/>
+    <tag k="surface" v="asphalt"/>
+</way>
+\end{lstlisting}
+\caption{One of the Ways in \texttt{ways.osm} extracted}
+\label{North Circular}
+\end{figure}
 After some research, I determined that the best way to parse the XML was to use the library \texttt{dom4j} \cite{dom4jsite}. The \texttt{parseXML} function that I used is shown in Figure \ref{parseXML}. 
 Essentially what it does is iterate through the items in the XML file, calling either \texttt{processNode} or \texttt{processWay}. \texttt{processNode} simply adds a new node to the \texttt{GeographicGraph}.
-The \texttt{processWay} function is more complex. 
+The \texttt{processWay} function is more complex as it has to work out whether ways should be added to the graph, and if additional data needs to be stored about them. Within each way stored in the \texttt{.osm} file,
+there will be additional tags that hold more data about the way \cite{osmhighwayspage}. An example way, which is part of the North Circular road, is shown in Figure \ref{North Circular}.\\
+First there are a ordered list of nodes which are sequentially connected, then there is a collection of optional Key Value pairs which form tags. The \texttt{processWay}
+function analyzes these tags in order to determine if the road is acceptable for cyclists. The example in Figure  \ref{North Circular}
+would probably not be a good way to include, because the tag \texttt{bicycle} is set to \texttt{no}, and it is a 3 lane road with a 40mph speed limit. The progam uses 
+accident data to work out which roads are dangerous, but some roads will not have many accidents on them simply because they are so dangerous nobody would ever cycle on them. 
+\subparagraph{Parsing the Ways}
+In order to convert from XML to a data representation in memory, we simply iterate through all the subelements in the way. If it is a node, the id is appended to a ordered list,
+and if it is a tag, it is added to a HashMap so it can be more easily queried. 
+\subparagraph{Deciding what is allowed}
+\begin{itemize}
+    \item Highway tag
+    \begin{itemize}
+        \item This tag is present in all roads mapped in OSM, so it's presence must be checked for.
+        \item This tag represents the \say{the importance of the highway within the road network as a whole}\cite{osmhighwayspage}.
+        \item This does not normally represent anything about the road quality, safety, usage, layout, or maximum speed. The exceptions to this are
+        \begin{itemize}
+            \item \texttt{motorway} which is obviously not wanted.
+            \item \texttt{living\_street} which represents places where pedestrians and cyclists have legal priority, such as Low Traffic Neighbourhoods.
+            \item \texttt{cycleway} which encompasses segregated areas for cyclists. 
+            \item \texttt{bridleway} which is a segregated area for horses, where cyclists may be allowed.
+            \item \texttt{footway} which is a footpath which cannot be cycled on.
+        \end{itemize}
+    \end{itemize}
+    \item Access tag. This tag represents what the access arangements for the area in question are. If it is \texttt{no} or \texttt{private}, the way would not be wanted.
+    \item Bicycle and Motor tags. These tags are the same as the access tag, but for specific types of vehicle.
+    \item Surface tag. This represents the surface the route is made out of. Ways that are made out of dirt or similar materials will not be parsed.
+    \item Note tag. This can contain lots of different notes, but the one \texttt{processWay} looks for is the \texttt{towpath}.
+    \item oneway tag. If true, the route will only be connected oneway.
+    \item maxpseed tag. This can be used to exclude dangerous roads.
+\end{itemize}
+After analyzing these tags \texttt{processWay} has multiple outcomes.
+\begin{itemize}
+    \item Way is included in the graph in both directions.
+    \item Way is included in the graph only in the same direction as the ordered list of nodes, because \texttt{oneway} is set to \texttt{yes}.
+    \item Way is considered too dangerous to include or access to cyclists is not guaranteed to be legal so specification point \textbf{2.5} would not be followed.
+    \item Way is included in the graph and the nodes are added to a set of safe nodes because it is in a cycle route or footpath.
+    \item Way is included in the graph and the nodes are added to a set of nodes that will be slower to travel on because of a footpath.
+\end{itemize}
+Some of these outcomes can overlap, such as being added to the group of safe nodes and having edges only added in one direction. The code for both \texttt{processNode}
+and \texttt{processWay} are shown in Figure \textcolor{red}. \texttt{cyclableGraph} is the instance of \texttt{GeographicGraph} contained in \texttt{OpenStreetMap}.
 \newpage
 \printbibliography
 \label{end}
