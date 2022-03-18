@@ -1,0 +1,25 @@
+classDiagram
+OpenStreetMap *-- GeographicGraph
+GeographicGraph *.. ContractableGraph
+class OpenStreetMap{
+    +String filename
+    +GeographicGraph cyclableGraph
+    -parseXML()
+    -processNode()
+    -processWay()
+}
+class GeographicGraph{
+    +HashSet vertices
+    +Boolean contracted
+    +ContractableGraph contractedGraph
+    +GatherWeights()
+    +findRoute()
+}
+class ContractableGraph{
+    -Hashset vertices
+    -Double distanceCost
+    -Double turnCost
+    +findRoute()
+    +createGraph()
+    +contractGraph()
+}

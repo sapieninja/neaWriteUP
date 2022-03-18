@@ -43,11 +43,16 @@
 \usepackage{mathtools}
 \usepackage{listings}
 \usepackage{xcolor}
-
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
+\usepackage{svg}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{OrangeRed}{rgb}{1.0,0.27,0.0}
+\definecolor{NavyBlue}{rgb}{0.0,1.0,0.1}
+
 
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
@@ -67,6 +72,22 @@
     showtabs=false,                  
     tabsize=2
 }
+\lstdefinelanguage{Kotlin}{
+  comment=[l]{//},
+  commentstyle={\color{gray}\ttfamily},
+  emph={filter, first, firstOrNull, forEach, lazy, map, mapNotNull, println},
+  emphstyle={\color{OrangeRed}},
+  identifierstyle=\color{black},
+  keywords={!in, !is, abstract, actual, annotation, as, as?, break, by, catch, class, companion, const, constructor, continue, crossinline, data, delegate, do, dynamic, else, enum, expect, external, false, field, file, final, finally, for, fun, get, if, import, in, infix, init, inline, inner, interface, internal, is, lateinit, noinline, null, object, open, operator, out, override, package, param, private, property, protected, public, receiveris, reified, return, return@, sealed, set, setparam, super, suspend, tailrec, this, throw, true, try, typealias, typeof, val, var, vararg, when, where, while},
+  keywordstyle={\color{blue}\bfseries},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+  morestring=[s]{"""*}{*"""},
+  ndkeywords={@Deprecated, @JvmField, @JvmName, @JvmOverloads, @JvmStatic, @JvmSynthetic, Array, Byte, Double, Float, Int, Integer, Iterable, Long, Runnable, Short, String, Any, Unit, Nothing},
+  ndkeywordstyle={\color{orange}\bfseries},
+  sensitive=true,
+  stringstyle={\color{green}\ttfamily},
+}
 
 \lstset{style=mystyle}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}%
@@ -84,6 +105,7 @@
 \makeatother
 \usepackage{subfiles} % Best loaded last in the preamble
 \begin{document}
+\label{start}
 \begin{center}
 
     \thispagestyle{empty}
@@ -109,7 +131,7 @@
     \setcounter{tocdepth}{3}
     \tableofcontents
 }
-\label{start}
+
 \newpage
 \section{Analysis}
 \subsection{Problem Area}
@@ -166,8 +188,8 @@ There exist similar systems for route finding such as Google Maps and Citymapper
 However they don't really take accident density into account which will be my aims.
 \subsection{Features}
 \subsubsection{Map data}
-I need a data source which can provide data on roads that are legal to cycle on as well as being freely available for me to use. I settled on Open Street Map, a project which combines data gathered by volunteers into one massive freely available map. The map is downloadable in the form of a large XML file or PBF file. A PBF file is just a binary version of the same thing. I could write code to parse this myself, but instead I think that I am going to use the library libosmium
-which works in C++.
+I need a data source which can provide data on roads that are legal to cycle on as well as being freely available for me to use. I settled on Open Street Map, a project which combines data gathered by volunteers into one massive freely available map. The map is downloadable in the form of a large XML file or PBF file. A PBF file is just a binary version of the same thing. I will write code to parse one of these myself.
+
 \subsubsection{Accident Data}
 \begin{figure}
     \begin{center}
@@ -200,8 +222,16 @@ Luckily the rest of the application can work without including traffic data so m
 \subsubsection{Finding the shortest route}
 Algorithms for finding the shortest path in a Graph are abundant. The most well known is Dijkstra's algorithm, and it's variant A*. In large Graphs, both Dijkstra's algorithm and A* can be very slow. I will most likely use preprocessing based algorithms such as ALT*/Contraction Hierachies to make my program run a lot faster.
 This preprocessing will take a long time, but when completed it will significantly reduce the time taken to complete searches. 
-\subsubsection{Class Layout}
-Insert class layout and associated planning here.
+\subsection{Class Layout}
+\begin{figure}[t]
+    \begin{center}
+    \includegraphics[height=8cm]{classdiagram.png}
+    \end{center}
+    \caption{Rough idea of the class diagram I will use}
+    \label{Class Diagram Simple}
+\end{figure}
+As seen in Figure \ref{Class Diagram Simple}, I will use 3 major classes which will deal with parsing, storing, and preprocessing Graph data respectively. These will be linked by object composition
+rather than inheritance. Where possible I will use private fields and methods. 
 \subsection{Critical Path}
 \begin{itemize} 
     \item Download accidents from the TFL API, parse for accidents that are of interest, and store it in a format that can be easily parsed later
@@ -209,7 +239,7 @@ Insert class layout and associated planning here.
     \item Write code that imports the accident data and connects it to given Graph nodes.
     \item Write a simple Dijkstra's Algorithm method of finding the shortest path.
     \item Write a preprocessing based method of finding the shortest path.
-    \item Write a frontend for inputing data about the route. 
+    \item Write a frontend for the input of user options.
 \end{itemize}
 \newpage
 \subsection{Specification}
@@ -236,7 +266,36 @@ Insert class layout and associated planning here.
     \item The System should be easy to use
     \item The System should not crash, and should give appropriate non crashing errors if user data is determined to be bad
     \item The parameters for the cost estimation functions should be user definable, but sensible defaults should also be defined
+    \item The Route should be output in a format that is easy for the user to follow on a mobile device
 \end{enumerate}
+\end{enumerate}
+\newpage
+\subsection{Specification Justification}
+\begin{enumerate}
+    \item Accident Download System
+    \begin{enumerate}
+        \item This point is required in order to obtain the necessary accident data
+        \item This point is required to reduce the file sizes needed to be packaged with the project, and make it easier to use later
+        \item This point is required as otherwise the system would not do much good in making the Route Finding System simpler
+    \end{enumerate} 
+    \item Route Finding System
+    \begin{enumerate}
+        \item The suitable data structure is required for all further queries
+        \item The accident data is required for route finding applications
+        \item This is required to tell where the costs for the accidents should be applied in shortest path queries
+        \item This is the main function of the project; if it can't do that it will be worthless
+        \item The Route should be realistic and connected; it can't ask people to teleport to their destination or phase through walls
+        \item The Route should only take people onto roads which are publicly accessible and legal to cycle on, as obviously I do not want to encourage people to break laws
+        \item The Route should attempt to be as safe as possible. Of course in some situations there is only one route which could be unsafe. In that situation that route would be suggested
+        \item Some roads can be very dangerous to cyclists, such as canal paths, and these won't necessarily be represented through the data
+        \item If the route generation takes too long the user will get bored. Other products offering the same features can generate routes very quickly
+        \item London is very large, and route generation may be slow without preprocessing, so the preprocessing mode will help with that
+        \item This makes sure that the preprocessing based approach is not losing information about the best route in any way
+        \item If the system was not easy to use, people would not use it
+        \item This feeds into the previous specification point
+        \item The customisability would allow users to make their own decisions about tradeoffs between time and safety, and sensible defaults should generate sensible routes
+        \item Especially with longer routes, the probability of the user being able to remember the route is slim, so they will need a mobile device to be able to guide them
+    \end{enumerate}
 \end{enumerate}
 \newpage
 \section{Design}
@@ -269,7 +328,7 @@ The Data is returned as a list of accidents, formatted as shown in Figure \ref{D
     }]
 }]
     \end{lstlisting}
-\caption{The Default output from the API}
+\caption{The Default output from the API \cite{tflapi}}
 \label{Default}
 \end{figure}
 \\
@@ -299,21 +358,82 @@ with open("output.json","w") as outfile:
 \caption{The script I wrote to parse the data}
 \label{Download.py}
 \end{figure}
-\label{end}
 \newpage
 \subsection{Route Finding System}
 \subsubsection{Overview and Design Choices}
+
+\begin{figure}[p]
+    \begin{center}
+        \includegraphics[height=21cm]{uml.png}
+    \end{center}
+    \caption{Complete UML diagram for my project}
+    \label{uml}
+\end{figure}
 I decided to use Kotlin for this project. Kotlin is related to Java in that it allows access to all the Standard Java Libraries, as well
 as external ones, and it runs in the Java Virtual Machine. Kotlin does not need to maintain backwards compatability with old Java code,
 so it has a much cleaner API and has nice syntax. As this was a new project not dependent on using Java code Kotlin was an obvious choice. 
 Furthermore, Java code can be easily translated into Kotlin code, so I could code things in Java then translate over if necessary.\\
-As seen in Figure \textcolor{red}{[insert figure here]}, I decided to define 3 main classes for my NEA. \texttt{OpenStreetMap} contains methods for parsing OSM files and creating a graph.
+As seen in Figure \ref{uml}, I decided to define 3 main classes for my NEA. \texttt{OpenStreetMap} contains methods for parsing OSM files and creating a graph.
 \texttt{OpenStreetMap} contains a single instance of the \texttt{GeographicGraph} class by object composition. This is because there will only be one \texttt{GeographicGraph}
 class associated with a given OSM file, and this system could be easily extended to hold information on two separate graph areas at the same time, which could be used if I wanted
 to extend the system to more cities. The \texttt{GeographicGraph} can contain an instance of the \texttt{ContractableGraph} class, if it has been contracted. If it has not been contracted,
 this class will not exist.\\
-I also created two other classes, \texttt{IntTuple} and \texttt{DoubleTuple}, which are used in priority queues in both the \texttt{GeographicGraph} and \texttt{ContractableGraph} classes.
+I also created two other classes, \texttt{IntTuple} and \texttt{DoubleTuple}, which are used in priority queues in both the \texttt{GeographicGraph} and \texttt{ContractableGraph} classes.\\
 \subsubsection{Open Street Map Data}
 Open Street Map is a world map generated by user mapping. It contains multitudes of data on all sorts of mappable things, from the height of stories to the roads that encompass them.
-
+Files can be in one of two formats; PBF \footnote{Protocol Buffer Format} which is a highly efficient binary format, and XML\footnote{Extensible Markup Language} which is a markdown language. I tried to use a library to parse 
+the PBF file into a Graph, but the main library for that did not work. So instead I decided to parse it manually as an XML file.\\
+\paragraph{Getting the relevant file}
+Openstreetmap has an API for requesting parts of the map, but it does not allow requesting large areas, such as the whole of London. There are many mirrors from which you can download large parts of the world. I decided to use geofabrik \cite{geofabrik}
+ because it allows you to download single countries. Next I extracted London from this dataset. This is not strictly necessary, as my program can still deal with large areas such as the whole of the UK, but it does not have accident data for such an area.
+ Furhtermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
+ of the M25 boundary, and used the following command\footnote{I used the OSM manipulation tool Osmium} to cut out London: 
+ \begin{verbatim}
+     $osmium extract -p course_m25_boundary.json united_kingdom.osm.pbf -o london.osm
+ \end{verbatim}
+ This file could be used by my program, as it intelligently avoids parsing non-routable ways, but I decided to further reduce the file size by removing all nodes and ways that were not part of highways.
+ This was again just for Quality of Life, as it makes parsing the file much faster.
+ \begin{verbatim}
+    $osmium tags-filter london.osm nw/highway -o ways.osm
+ \end{verbatim}
+ This created a 370MB file called \texttt{ways.osm}. I could have reduced this further by removing the ways that are irrelevant to me, but I decided to do that in the parser so that it would be
+ more easily configurable.
+\paragraph{Parsing the file}
+Open Street Map files are built out of 3 main elements \cite{osmwikipage}:
+\begin{itemize}
+    \item Nodes, which contain longitude and latitude. 
+    \item Ways, which contain between 2 and 2000 ordered nodes. These are used to form roads, but also all kinds of other polygons, such as buildings, rivers, and walls. 
+    \item Relations, which contain many ways, nodes and relations. These are used to connect things together, like all roads on a certain bus route. These are not relevant to my project.
+\end{itemize}
+\begin{figure}[h]
+    \begin{lstlisting}[language=Kotlin]
+        private fun parseXML(filename : String)
+        {
+            val stream = File(filename).inputStream()
+            val saxReader = SAXReader()
+            val cyclableDocument = saxReader.read(stream)
+            val root: Element = cyclableDocument.rootElement
+            val it: Iterator<Element> = root.elementIterator()
+            while (it.hasNext()) {
+                val element: Element = it.next()
+                when(element.qName.name)
+                {
+                    "node" -> processNode(element)
+                    "way"  -> processWay(element)
+                }
+            }
+        }
+    \end{lstlisting}
+    \caption{The parseXML function from the OpenStreetMap class}
+    \label{parseXML}
+    \end{figure}
+All of these elements can also contain additional information on what type of node or way it is, as well as a unique id. 
+As I only care about nodes that are part of roads I can ignore the relation element completely. In a \texttt{.osm} file, the nodes all come first. This means that I can parse the nodes, 
+and then figure out how all the nodes are connected using the ways.\\
+After some research, I determined that the best way to parse the XML was to use the library \texttt{dom4j} \cite{dom4jsite}. The \texttt{parseXML} function that I used is shown in Figure \ref{parseXML}. 
+Essentially what it does is iterate through the items in the XML file, calling either \texttt{processNode} or \texttt{processWay}. \texttt{processNode} simply adds a new node to the \texttt{GeographicGraph}.
+The \texttt{processWay} function is more complex. 
+\newpage
+\printbibliography
+\label{end}
 \end{document}
