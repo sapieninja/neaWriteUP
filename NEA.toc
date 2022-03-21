@@ -16,7 +16,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {1.4.3}Traffic Data}{6}{subsubsection.1.4.3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {1.4.4}Finding the shortest route}{7}{subsubsection.1.4.4}%
+\contentsline {subsubsection}{\numberline {1.4.4}Finding the shortest route}{6}{subsubsection.1.4.4}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {1.5}Class Layout}{7}{subsection.1.5}%
 \defcounter {refsection}{0}\relax 
@@ -44,6 +44,52 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {paragraph}{Parsing the file}{14}{section*.10}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subparagraph}{Parsing the Ways}{15}{section*.13}%
+\contentsline {subparagraph}{Parsing the ways}{15}{section*.12}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subparagraph}{Deciding what is allowed}{15}{section*.14}%
+\contentsline {subparagraph}{Deciding what is allowed}{15}{section*.13}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.3}Representing and Querying the Graph}{17}{subsubsection.2.2.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{Representing the Graph}{17}{section*.14}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{Creating the Graph}{17}{section*.16}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Pruning the Graph}{17}{section*.17}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{Querying the Graph}{18}{figure.caption.19}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Dijkstra's Algorithm}{18}{section*.20}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Cost Function}{19}{section*.21}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Calculating Distances}{20}{section*.23}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.4}Preprocessing and Subsequent Querying of the Graph}{20}{subsubsection.2.2.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{Contraction Hierachies}{20}{section*.24}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Bidirectional Dijkstra Queries}{21}{section*.26}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Querying the Contracted Graph}{21}{section*.27}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Finding the shortest route}{21}{section*.28}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Limitations}{21}{section*.29}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Node Order}{21}{section*.30}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subparagraph}{Optimising Contraction}{22}{section*.31}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.5}Saving the work done to disk}{22}{subsubsection.2.2.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.6}User Interface}{22}{subsubsection.2.2.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3}Final Design}{22}{section.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4}Testing}{22}{section.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.1}Reliability Testing}{22}{subsection.4.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {4.2}Performance Testing}{22}{subsection.4.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {5}Evaluation}{22}{section.5}%

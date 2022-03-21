@@ -18,81 +18,7 @@
 
 
 \refsection{0}
-  \datalist[entry]{nty/global//global/global}
-    \entry{geojsondefinition}{online}{}
-      \name{author}{1}{}{%
-        {{hash=0a32107ac4a83e90ce9ad1fe3dc110dd}{%
-           family={developers},
-           familyi={d\bibinitperiod},
-           given={GeoJSON},
-           giveni={G\bibinitperiod}}}%
-      }
-      \strng{namehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
-      \strng{fullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
-      \strng{bibnamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
-      \strng{authorbibnamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
-      \strng{authornamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
-      \strng{authorfullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
-      \field{sortinit}{d}
-      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{GeoJSON website}
-      \verb{urlraw}
-      \verb https://geojson.org/
-      \endverb
-      \verb{url}
-      \verb https://geojson.org/
-      \endverb
-    \endentry
-    \entry{dom4jsite}{online}{}
-      \name{author}{1}{}{%
-        {{hash=9a64b91c4b46ccf0e89e674bedd43c21}{%
-           family={dom4j},
-           familyi={d\bibinitperiod}}}%
-      }
-      \strng{namehash}{9a64b91c4b46ccf0e89e674bedd43c21}
-      \strng{fullhash}{9a64b91c4b46ccf0e89e674bedd43c21}
-      \strng{bibnamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
-      \strng{authorbibnamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
-      \strng{authornamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
-      \strng{authorfullhash}{9a64b91c4b46ccf0e89e674bedd43c21}
-      \field{sortinit}{d}
-      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{dom4j documentation site}
-      \verb{urlraw}
-      \verb https://dom4j.github.io
-      \endverb
-      \verb{url}
-      \verb https://dom4j.github.io
-      \endverb
-    \endentry
-    \entry{geofabrik}{online}{}
-      \name{author}{1}{}{%
-        {{hash=8647726d4ec2df6cff16c19b3622ca25}{%
-           family={geofabrik},
-           familyi={g\bibinitperiod}}}%
-      }
-      \strng{namehash}{8647726d4ec2df6cff16c19b3622ca25}
-      \strng{fullhash}{8647726d4ec2df6cff16c19b3622ca25}
-      \strng{bibnamehash}{8647726d4ec2df6cff16c19b3622ca25}
-      \strng{authorbibnamehash}{8647726d4ec2df6cff16c19b3622ca25}
-      \strng{authornamehash}{8647726d4ec2df6cff16c19b3622ca25}
-      \strng{authorfullhash}{8647726d4ec2df6cff16c19b3622ca25}
-      \field{sortinit}{g}
-      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Open Street Map mirror}
-      \verb{urlraw}
-      \verb https://download.geofabrik.de
-      \endverb
-      \verb{url}
-      \verb https://download.geofabrik.de
-      \endverb
-    \endentry
+  \datalist[entry]{none/global//global/global}
     \entry{tflapi}{online}{}
       \name{author}{1}{}{%
         {{hash=1c74bd99a5a59e205d1f45582f687d96}{%
@@ -107,8 +33,8 @@
       \strng{authorbibnamehash}{1c74bd99a5a59e205d1f45582f687d96}
       \strng{authornamehash}{1c74bd99a5a59e205d1f45582f687d96}
       \strng{authorfullhash}{1c74bd99a5a59e205d1f45582f687d96}
-      \field{sortinit}{L}
-      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 17.03.2022)}
@@ -121,20 +47,72 @@
       \endverb
       \keyw{TFL,API}
     \endentry
+    \entry{geofabrik}{online}{}
+      \name{author}{1}{}{%
+        {{hash=8647726d4ec2df6cff16c19b3622ca25}{%
+           family={geofabrik},
+           familyi={g\bibinitperiod}}}%
+      }
+      \strng{namehash}{8647726d4ec2df6cff16c19b3622ca25}
+      \strng{fullhash}{8647726d4ec2df6cff16c19b3622ca25}
+      \strng{bibnamehash}{8647726d4ec2df6cff16c19b3622ca25}
+      \strng{authorbibnamehash}{8647726d4ec2df6cff16c19b3622ca25}
+      \strng{authornamehash}{8647726d4ec2df6cff16c19b3622ca25}
+      \strng{authorfullhash}{8647726d4ec2df6cff16c19b3622ca25}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Open Street Map mirror}
+      \verb{urlraw}
+      \verb https://download.geofabrik.de
+      \endverb
+      \verb{url}
+      \verb https://download.geofabrik.de
+      \endverb
+    \endentry
+    \entry{geojsondefinition}{online}{}
+      \name{author}{1}{}{%
+        {{hash=0a32107ac4a83e90ce9ad1fe3dc110dd}{%
+           family={developers},
+           familyi={d\bibinitperiod},
+           given={GeoJSON},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{fullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{bibnamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{authorbibnamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{authornamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \strng{authorfullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{GeoJSON website}
+      \verb{urlraw}
+      \verb https://geojson.org/
+      \endverb
+      \verb{url}
+      \verb https://geojson.org/
+      \endverb
+    \endentry
     \entry{geojsonsource}{online}{}
       \name{author}{1}{}{%
-        {{hash=7ff49301e4895b7a1c9a5adb195c8294}{%
-           family={skgrange},
-           familyi={s\bibinitperiod}}}%
+        {{hash=01223b0485c8b39ec55efd8dbd532bf9}{%
+           family={Grange},
+           familyi={G\bibinitperiod},
+           given={Stuart},
+           giveni={S\bibinitperiod}}}%
       }
-      \strng{namehash}{7ff49301e4895b7a1c9a5adb195c8294}
-      \strng{fullhash}{7ff49301e4895b7a1c9a5adb195c8294}
-      \strng{bibnamehash}{7ff49301e4895b7a1c9a5adb195c8294}
-      \strng{authorbibnamehash}{7ff49301e4895b7a1c9a5adb195c8294}
-      \strng{authornamehash}{7ff49301e4895b7a1c9a5adb195c8294}
-      \strng{authorfullhash}{7ff49301e4895b7a1c9a5adb195c8294}
-      \field{sortinit}{s}
-      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \strng{namehash}{01223b0485c8b39ec55efd8dbd532bf9}
+      \strng{fullhash}{01223b0485c8b39ec55efd8dbd532bf9}
+      \strng{bibnamehash}{01223b0485c8b39ec55efd8dbd532bf9}
+      \strng{authorbibnamehash}{01223b0485c8b39ec55efd8dbd532bf9}
+      \strng{authornamehash}{01223b0485c8b39ec55efd8dbd532bf9}
+      \strng{authorfullhash}{01223b0485c8b39ec55efd8dbd532bf9}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{GeoJSON download site}
@@ -160,8 +138,8 @@
       \strng{authornamehash}{911eeffdcc6d74a689b677b74ceda544}
       \strng{authorfullhash}{911eeffdcc6d74a689b677b74ceda544}
       \field{extraname}{1}
-      \field{sortinit}{W}
-      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 17.03.2022)}
@@ -173,6 +151,30 @@
       \verb https://wiki.openstreetmap.org/wiki/Elements
       \endverb
       \keyw{OSM,WIKI}
+    \endentry
+    \entry{dom4jsite}{online}{}
+      \name{author}{1}{}{%
+        {{hash=9a64b91c4b46ccf0e89e674bedd43c21}{%
+           family={dom4j},
+           familyi={d\bibinitperiod}}}%
+      }
+      \strng{namehash}{9a64b91c4b46ccf0e89e674bedd43c21}
+      \strng{fullhash}{9a64b91c4b46ccf0e89e674bedd43c21}
+      \strng{bibnamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
+      \strng{authorbibnamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
+      \strng{authornamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
+      \strng{authorfullhash}{9a64b91c4b46ccf0e89e674bedd43c21}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{dom4j documentation site}
+      \verb{urlraw}
+      \verb https://dom4j.github.io
+      \endverb
+      \verb{url}
+      \verb https://dom4j.github.io
+      \endverb
     \endentry
     \entry{osmhighwayspage}{online}{}
       \name{author}{1}{}{%
@@ -189,8 +191,8 @@
       \strng{authornamehash}{911eeffdcc6d74a689b677b74ceda544}
       \strng{authorfullhash}{911eeffdcc6d74a689b677b74ceda544}
       \field{extraname}{2}
-      \field{sortinit}{W}
-      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 18.03.2022)}
@@ -202,6 +204,330 @@
       \verb https://wiki.openstreetmap.org/wiki/Key:highway
       \endverb
       \keyw{OSM,WIKI}
+    \endentry
+    \entry{Beckmann1990}{inproceedings}{}
+      \name{author}{4}{}{%
+        {{hash=0e28dbf7665b7e368bbb69ec0d50262e}{%
+           family={Beckmann},
+           familyi={B\bibinitperiod},
+           given={Norbert},
+           giveni={N\bibinitperiod}}}%
+        {{hash=9559fe65ed2c0877cf14a66fe1f8e9b3}{%
+           family={Kriegel},
+           familyi={K\bibinitperiod},
+           given={Hans-Peter},
+           giveni={H\bibinithyphendelim P\bibinitperiod}}}%
+        {{hash=967489889af05cbfc683b47bd544422d}{%
+           family={Schneider},
+           familyi={S\bibinitperiod},
+           given={Ralf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=4a8685520eb548abf6eb6a626fac5ea1}{%
+           family={Seeger},
+           familyi={S\bibinitperiod},
+           given={Bernhard},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM Press}%
+      }
+      \strng{namehash}{ae079ff90c7006fbabb37ff17ab9821a}
+      \strng{fullhash}{92833fd4761e401fd77321fc559c3265}
+      \strng{bibnamehash}{ae079ff90c7006fbabb37ff17ab9821a}
+      \strng{authorbibnamehash}{ae079ff90c7006fbabb37ff17ab9821a}
+      \strng{authornamehash}{ae079ff90c7006fbabb37ff17ab9821a}
+      \strng{authorfullhash}{92833fd4761e401fd77321fc559c3265}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 1990 ACM SIGMOD international conference on Management of data - SIGMOD '90}
+      \field{title}{The R*-tree: an efficient and robust access method for points and rectangles}
+      \field{year}{1990}
+      \verb{doi}
+      \verb 10.1145/93597.98741
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/93597.98741
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/93597.98741
+      \endverb
+    \endentry
+    \entry{rtree}{online}{}
+      \name{author}{1}{}{%
+        {{hash=93e53cc3e04a5d7577d1cdb78c068b9b}{%
+           family={Moten},
+           familyi={M\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{93e53cc3e04a5d7577d1cdb78c068b9b}
+      \strng{fullhash}{93e53cc3e04a5d7577d1cdb78c068b9b}
+      \strng{bibnamehash}{93e53cc3e04a5d7577d1cdb78c068b9b}
+      \strng{authorbibnamehash}{93e53cc3e04a5d7577d1cdb78c068b9b}
+      \strng{authornamehash}{93e53cc3e04a5d7577d1cdb78c068b9b}
+      \strng{authorfullhash}{93e53cc3e04a5d7577d1cdb78c068b9b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Library Github Page}
+      \verb{urlraw}
+      \verb https://github.com/davidmoten/rtree2
+      \endverb
+      \verb{url}
+      \verb https://github.com/davidmoten/rtree2
+      \endverb
+    \endentry
+    \entry{dijkstrapseudo}{online}{}
+      \name{author}{1}{}{%
+        {{hash=cc7046507315975b40dedee7634076d6}{%
+           family={Editors},
+           familyi={E\bibinitperiod},
+           given={Wikipedia},
+           giveni={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{cc7046507315975b40dedee7634076d6}
+      \strng{fullhash}{cc7046507315975b40dedee7634076d6}
+      \strng{bibnamehash}{cc7046507315975b40dedee7634076d6}
+      \strng{authorbibnamehash}{cc7046507315975b40dedee7634076d6}
+      \strng{authornamehash}{cc7046507315975b40dedee7634076d6}
+      \strng{authorfullhash}{cc7046507315975b40dedee7634076d6}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{addendum}{Accessed (19.03.2022)}
+      \verb{urlraw}
+      \verb https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode
+      \endverb
+      \verb{url}
+      \verb https://en.wikipedia.org/wiki/Dijkstra's_algorithm#Pseudocode
+      \endverb
+    \endentry
+    \entry{Dijkstra1959}{article}{}
+      \name{author}{1}{}{%
+        {{hash=fa6182769b69c9f7b1559f8430d88929}{%
+           family={Dijkstra},
+           familyi={D\bibinitperiod},
+           given={E.\bibnamedelimi W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Springer Science}%
+        {Business Media LLC}%
+      }
+      \strng{namehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{fullhash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{bibnamehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{authorbibnamehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{authornamehash}{fa6182769b69c9f7b1559f8430d88929}
+      \strng{authorfullhash}{fa6182769b69c9f7b1559f8430d88929}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Numerische Mathematik}
+      \field{month}{12}
+      \field{number}{1}
+      \field{title}{A note on two problems in connexion with graphs}
+      \field{volume}{1}
+      \field{year}{1959}
+      \field{pages}{269\bibrangedash 271}
+      \range{pages}{3}
+      \verb{doi}
+      \verb 10.1007/bf01386390
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/bf01386390
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/bf01386390
+      \endverb
+    \endentry
+    \entry{Hart1968}{article}{}
+      \name{author}{3}{}{%
+        {{hash=5f7d498e6ea16510d746ba3d22fd28db}{%
+           family={Hart},
+           familyi={H\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=554618115c97ec956d0353919ee5dbc9}{%
+           family={Nilsson},
+           familyi={N\bibinitperiod},
+           given={Nils},
+           giveni={N\bibinitperiod}}}%
+        {{hash=253a4de6b29f96e30136e368e9af44d0}{%
+           family={Raphael},
+           familyi={R\bibinitperiod},
+           given={Bertram},
+           giveni={B\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Institute of Electrical}%
+        {Electronics Engineers (IEEE)}%
+      }
+      \strng{namehash}{279a929920db407e494987a8d79f3479}
+      \strng{fullhash}{279a929920db407e494987a8d79f3479}
+      \strng{bibnamehash}{279a929920db407e494987a8d79f3479}
+      \strng{authorbibnamehash}{279a929920db407e494987a8d79f3479}
+      \strng{authornamehash}{279a929920db407e494987a8d79f3479}
+      \strng{authorfullhash}{279a929920db407e494987a8d79f3479}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Systems Science and Cybernetics}
+      \field{number}{2}
+      \field{title}{A Formal Basis for the Heuristic Determination of Minimum Cost Paths}
+      \field{volume}{4}
+      \field{year}{1968}
+      \field{pages}{100\bibrangedash 107}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1109/tssc.1968.300136
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1109/tssc.1968.300136
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1109/tssc.1968.300136
+      \endverb
+    \endentry
+    \entry{cosinerulediagram}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=a2afdc8fa419ef29fec6b2c4a89b4a46}{%
+           family={Dweisman},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
+      \strng{fullhash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
+      \strng{bibnamehash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
+      \strng{authorbibnamehash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
+      \strng{authornamehash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
+      \strng{authorfullhash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \verb{urlraw}
+      \verb https://commons.wikimedia.org/wiki/File:Triangle_with_notations.svg
+      \endverb
+      \verb{url}
+      \verb https://commons.wikimedia.org/wiki/File:Triangle_with_notations.svg
+      \endverb
+    \endentry
+    \entry{de1795memoria}{book}{}
+      \name{author}{1}{}{%
+        {{hash=ad4b9788506079e7af3ea46e2d9af4c9}{%
+           family={Mendoza\bibnamedelimb y\bibnamedelima R'ios},
+           familyi={M\bibinitperiod\bibinitdelim y\bibinitperiod\bibinitdelim R\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           prefix={de},
+           prefixi={d\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Imp. Real}%
+      }
+      \strng{namehash}{ad4b9788506079e7af3ea46e2d9af4c9}
+      \strng{fullhash}{ad4b9788506079e7af3ea46e2d9af4c9}
+      \strng{bibnamehash}{ad4b9788506079e7af3ea46e2d9af4c9}
+      \strng{authorbibnamehash}{ad4b9788506079e7af3ea46e2d9af4c9}
+      \strng{authornamehash}{ad4b9788506079e7af3ea46e2d9af4c9}
+      \strng{authorfullhash}{ad4b9788506079e7af3ea46e2d9af4c9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Memoria sobre algunos metodos nuevos de calcular la longitud por las distancias lunares y explicaciones pr'acticas de una teor'ia para la soluci'on de otros problemas de navegaci'on}
+      \field{year}{1795}
+      \verb{urlraw}
+      \verb https://books.google.co.uk/books?id=030t0OqlX2AC
+      \endverb
+      \verb{url}
+      \verb https://books.google.co.uk/books?id=030t0OqlX2AC
+      \endverb
+    \endentry
+    \entry{travelplannervideo}{online}{}
+      \name{author}{1}{}{%
+        {{hash=f85e97bc6f33b4ac130cca381d6068f9}{%
+           family={Langer},
+           familyi={L\bibinitperiod},
+           given={Timothy\bibnamedelima 'zeevox'},
+           giveni={T\bibinitperiod\bibinitdelim '\bibinitperiod}}}%
+      }
+      \strng{namehash}{f85e97bc6f33b4ac130cca381d6068f9}
+      \strng{fullhash}{f85e97bc6f33b4ac130cca381d6068f9}
+      \strng{bibnamehash}{f85e97bc6f33b4ac130cca381d6068f9}
+      \strng{authorbibnamehash}{f85e97bc6f33b4ac130cca381d6068f9}
+      \strng{authornamehash}{f85e97bc6f33b4ac130cca381d6068f9}
+      \strng{authorfullhash}{f85e97bc6f33b4ac130cca381d6068f9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{How do travel planners work?}
+      \verb{urlraw}
+      \verb https://www.youtube.com/watch?v=wLNai11U2tI
+      \endverb
+      \verb{url}
+      \verb https://www.youtube.com/watch?v=wLNai11U2tI
+      \endverb
+    \endentry
+    \entry{Geisberger2012}{article}{}
+      \name{author}{4}{}{%
+        {{hash=d304bbf1a7d34c7a7f3d2b0e6bdcbea8}{%
+           family={Geisberger},
+           familyi={G\bibinitperiod},
+           given={Robert},
+           giveni={R\bibinitperiod}}}%
+        {{hash=be6c7f12620ef1a8d1d85d96d476a158}{%
+           family={Sanders},
+           familyi={S\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+        {{hash=29b0627d9ddb65dcdfd14ddc22291e93}{%
+           family={Schultes},
+           familyi={S\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+        {{hash=b84a32e29c57604b46ef3ae4cf7ba6ab}{%
+           family={Vetter},
+           familyi={V\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {Institute for Operations Research}%
+        {the Management Sciences ({INFORMS})}%
+      }
+      \strng{namehash}{9c470e7aa352a26fc6e131c2bc2825d3}
+      \strng{fullhash}{8fa4fad0356835bfddc0522d9c3c74bd}
+      \strng{bibnamehash}{9c470e7aa352a26fc6e131c2bc2825d3}
+      \strng{authorbibnamehash}{9c470e7aa352a26fc6e131c2bc2825d3}
+      \strng{authornamehash}{9c470e7aa352a26fc6e131c2bc2825d3}
+      \strng{authorfullhash}{8fa4fad0356835bfddc0522d9c3c74bd}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Transportation Science}
+      \field{month}{8}
+      \field{number}{3}
+      \field{title}{Exact Routing in Large Road Networks Using Contraction Hierarchies}
+      \field{volume}{46}
+      \field{year}{2012}
+      \field{pages}{388\bibrangedash 404}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1287/trsc.1110.0401
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1287/trsc.1110.0401
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1287/trsc.1110.0401
+      \endverb
     \endentry
   \enddatalist
 \endrefsection
