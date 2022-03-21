@@ -1,17 +1,17 @@
 [0] Config.pm:311> INFO - This is Biber 2.16
 [0] Config.pm:314> INFO - Logfile is 'NEA.blg'
-[56] biber:340> INFO - === Sun Mar 20, 2022, 23:04:03
-[66] Biber.pm:415> INFO - Reading 'NEA.bcf'
-[114] Biber.pm:952> INFO - Found 16 citekeys in bib section 0
-[123] Biber.pm:4340> INFO - Processing section 0
-[130] Biber.pm:4531> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
-[130] bibtex.pm:1689> INFO - LaTeX decoding ...
-[137] bibtex.pm:1494> INFO - Found BibTeX data source 'bibliography.bib'
-[174] Utils.pm:395> WARN - legacy month field 'dec' in entry 'Dijkstra1959' is not an integer - this will probably not sort properly.
-[201] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[201] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[201] Biber.pm:4168> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[201] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-US'
-[209] bbl.pm:654> INFO - Writing 'NEA.bbl' with encoding 'UTF-8'
-[213] bbl.pm:757> INFO - Output to NEA.bbl
-[213] Biber.pm:128> INFO - WARNINGS: 1
+[65] biber:340> INFO - === Mon Mar 21, 2022, 13:29:22
+[76] Biber.pm:415> INFO - Reading 'NEA.bcf'
+[130] Biber.pm:952> INFO - Found 17 citekeys in bib section 0
+[139] Biber.pm:4340> INFO - Processing section 0
+[148] Biber.pm:4531> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
+[149] bibtex.pm:1689> INFO - LaTeX decoding ...
+[158] bibtex.pm:1494> INFO - Found BibTeX data source 'bibliography.bib'
+[203] Utils.pm:384> WARN - legacy month field 'dec' in entry 'Dijkstra1959' is not an integer - this will probably not sort properly.
+[234] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[234] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[234] Biber.pm:4168> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[234] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-US'
+[244] bbl.pm:654> INFO - Writing 'NEA.bbl' with encoding 'UTF-8'
+[250] bbl.pm:757> INFO - Output to NEA.bbl
+[250] Biber.pm:128> INFO - WARNINGS: 1

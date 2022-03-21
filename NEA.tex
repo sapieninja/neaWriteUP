@@ -384,7 +384,7 @@ the PBF file into a Graph, but the main library for that did not work. So instea
 \paragraph{Getting the relevant file}
 Openstreetmap has an API for requesting parts of the map, but it does not allow requesting large areas, such as the whole of London. There are many mirrors from which you can download large parts of the world. I decided to use geofabrik \cite{geofabrik}
  because it allows you to download single countries. Next I extracted London from this dataset. This is not strictly necessary, as my program can still deal with large areas such as the whole of the UK, but it does not have accident data for such an area.
- Furhtermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON\cite{geojsondefinition} file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
+ Furthermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON\cite{geojsondefinition} file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
  of the M25 boundary, and used the following command\footnote{I used the OSM manipulation tool Osmium} to cut out London: 
  \begin{verbatim}
      $osmium extract -p course_m25_boundary.json united_kingdom.osm.pbf -o london.osm
@@ -569,7 +569,6 @@ When the node is settled this value is known to be true. This process is repeate
 \\A variant of Dijkstra's algorithm called A*\cite{Hart1968} uses heuristics to reduce the required search space. The heuristic estimates the distance to the end node, meaning that nodes are vaguely settled in the right direction.
 However this heuristic has to be "admissible" if the shortest possible route is to be found. This means that it never makes overestimates. As the density of accidents cannot be predicted between any point and the end node, the heuristic would be extremely loosely fitting, and would 
 fail to significantly reduce the search space. 
-\newpage
 \subparagraph{Cost Function}
 Any route finding algorithm needs a function or set of functions for the cost that would be incurred if going a certain way. If going from node $u$ to node $v$, the function $c$ would be:
 \begin{align*}
@@ -595,7 +594,11 @@ a^2 &= b^2 + c^2 - 2bc\cos{\alpha}\\
 \end{align*}
 \subparagraph{Calculating Distances}
 To calculate real world distances\footnote{Assuming the world is a sphere} from coordinates, Great Circle distance is required. This is the shortest possible distance across the surface of a sphere. The haversine formula\cite{de1795memoria} is one formula that calculates this distance.
-\textcolor{red}{Add haversine formula here}
+For two points $(\phi_1,\lambda_1)$ and $(\phi_2,\lambda_2)$ where $\phi$ and $\lambda$ are latitude and longitude respectively, the great circle distance can be calculated as
+\[
+d = 2r\arcsin\sqrt{\sin^2{(\frac{\phi_2-\phi_1}{2})}+\cos{\phi_1}\cos{\phi_2}\sin^2{(\frac{\lambda_2-\lambda_1}{2})}}
+\]
+where $r$ is the radius of the earth, so approximately $6371$ km.
 \subsubsection{Preprocessing and Subsequent Querying of the Graph}
 There are many different methods of route finding\cite{travelplannervideo}. In the Analysis section I considered both Contraction Hierachies\cite{Geisberger2012} and ALT*. Upon further research, I determined that contraction hierachies would be more
 efficient than ALT* in this situation. 
@@ -606,13 +609,14 @@ some routes that are obviously the best, at least to my program.\\
 \begin{figure}
     \begin{center}
 \begin{tikzpicture}
-\filldraw (0,0) circle (2pt) node[anchor=south] {$p$};
-\filldraw (2,2) circle (2pt) node[anchor=south] {$q$};n    
-\filldraw (-2,0) circle (2pt) node[anchor=south] {$s$};
-\filldraw (-2,-2) circle (2pt) node[anchor=east] {$t$};
+\filldraw (0,0) circle (2pt) node[anchor=south east] {$p$};
+\filldraw (2,2) circle (2pt) node[anchor=south east] {$q$};
+\filldraw (0,-2) circle (2pt) node[anchor=south east] {$r$};  
+\filldraw (-2,0) circle (2pt) node[anchor=south east] {$s$};
+\filldraw (-2,-2) circle (2pt) node[anchor=south east] {$t$};
 \draw (-2,0) -- (-2,-2) node[pos=0.5,left] {$2$};
 \draw (-2,-2) -- (0,-2) node[pos=0.5,below] {$3$};
-\draw (-2,0) -- (0,0) node[pos=0.5,above] {$5$};
+\draw (-2,0) -- (0,0) node[pos=0.5,below] {$5$};
 \draw (0,0) -- (2,2) node[pos=0.5,above] {$3$};
 \draw (0,0) -- (0,-2) node[pos=0.5,left] {$2$};
 \draw[dashed] (-2,0) -- (2,2) node [pos=0.5,below] {$8$};
@@ -654,12 +658,18 @@ Instead a variant of dijkstra's algorithm can be used, with a stopping condition
 Another useful optimisation technique is to refill the priority queue every so often, for instance when lots of re-insertions have to happen. 
 \subsubsection{Saving the work done to disk}
 \label{sec:serialization}
+So that intensive workloads such as contracting the graph do not need to be repeated a facility for saving and loading this information must exist.
+It would be possible to write some manual serialisation code, but it is simpler to just save the whole class objects. Kotlin has a 
+fairly easy to use serialisation library that can serialise whole objects to disk\cite{kotlinh}. The standard mode for this is serialising to JSON, but as my files will likely be very large, my design uses the alternate CBOR encoding instead.
+CBOR\footnote{Concise Binary Object Representation} can be used for more consise binary representation of JSON objects.
 \subsubsection{User Interface}
-\section{Final Design}
+\textcolor{red}{Do this section}
+\section{Technical Implementation}
 \section{Testing}
 \subsection{Reliability Testing}
 \subsection{Performance Testing}
 \section{Evaluation}
+Therefore, the project was a success.
 \newpage
 \printbibliography
 \label{end}

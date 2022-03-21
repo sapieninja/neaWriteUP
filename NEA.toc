@@ -68,7 +68,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {paragraph}{Contraction Hierachies}{20}{section*.24}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subparagraph}{Bidirectional Dijkstra Queries}{21}{section*.26}%
+\contentsline {subparagraph}{Bidirectional Dijkstra Queries}{20}{section*.26}%
 \defcounter {refsection}{0}\relax 
 \contentsline {subparagraph}{Querying the Contracted Graph}{21}{section*.27}%
 \defcounter {refsection}{0}\relax 
@@ -84,7 +84,7 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsubsection}{\numberline {2.2.6}User Interface}{22}{subsubsection.2.2.6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Final Design}{22}{section.3}%
+\contentsline {section}{\numberline {3}Technical Implementation}{22}{section.3}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Testing}{22}{section.4}%
 \defcounter {refsection}{0}\relax 
