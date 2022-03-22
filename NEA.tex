@@ -1,6 +1,5 @@
 \documentclass[11pt,twoside,a4paper]{article}
 % Open Sans font for the whole document
-%\usepackage[default]{opensans}
 \usepackage[T1]{fontenc}
 \usepackage[a4paper, margin=1.91cm, top=2.91cm, bottom=2.91cm]{geometry}
 \usepackage[utf8]{inputenc}
@@ -13,6 +12,7 @@
 \usepackage{fancyhdr}
 \usepackage{multicol}
 \usepackage{dirtytalk}
+\usepackage{pmboxdraw}
 \usepackage{enumitem}
 \usepackage{array}
 \pagestyle{fancy}
@@ -118,7 +118,7 @@
 
     \vspace{40pt}
 
-    \textbf{\huge{Optimised Safe Route Finder}}
+    \textbf{\huge{Optimised Safe Route Finder For Cyclists}}
 
     \vspace{60pt}
 
@@ -127,6 +127,11 @@
     {\small Pages: \pagedifference{start}{end}}
     
     {\small Written in \LaTeX}
+    \begin{figure}[h]
+        \begin{center}
+    \includegraphics[width=4cm]{coverimage.png}
+            \end{center}
+    \end{figure}
 
 \end{center}
 \newpage
@@ -270,7 +275,7 @@ rather than inheritance. Where possible I will use private fields and methods.
     \item The System should be easy to use
     \item \label{nocrashy} The System should not crash, and should give appropriate non crashing errors if user data is determined to be bad
     \item The parameters for the cost estimation functions should be user definable, but sensible defaults should also be defined
-    \item The Route should be output in a format that is easy for the user to follow on a mobile device
+    \item \label{followpossible}The Route should be output in a format that is easy for the user to follow on a mobile device
     \item The System should have a system for saving all data from intensive calculation to disk
 \end{enumerate}
 \end{enumerate}
@@ -308,6 +313,7 @@ rather than inheritance. Where possible I will use private fields and methods.
 \subsection{Accident Download System}
 As outlined in the Specification, this system should be capable of interfacing with the TFL API, downloading the accidents, deciding which ones are relevant, and storing this in a useful format.
 \subsubsection{Pulling from the TFL API}
+\label{Pulling from the TFL API}
 The Transport For London API is an excellent API which can provide information on many different aspects of the Transport For London network. The specific API which I used is the AccidentStats API.
 This API is very simple, you simply request a given year and a JSON object is returned which contains all of the accidents that happened in london that year. These consist of all the accidents that were reported tocdepth
 the police as happening in that year. Of course, there will be many more accidents than are on the API, but these will mostly be more minor accidents.
@@ -343,7 +349,7 @@ use that result in the route finder. I used two scripts to do this.\\
 TFL started gathering this data in 2005, and the most recent update was in 2019, so the first script downloads all the data from 2005 to 2019 and save it in a subfolder called \texttt{accidents}.
 The script loops through all the years between 2005 and 2019 and creates a JSON file for that year. \\
 \subsubsection{Parsing the Data}
-The next step is to go through the data from all the years, and save all the accidents that are pertinent to my project. As seen in Figure \ref{Default}, each accident listing has information on casualties,\\
+The next step is to go through the data from all the years\footnote{I later decided to remove some years see Section \ref{Accident Download System Implementation}}, and save all the accidents that are pertinent to my project. As seen in Figure \ref{Default}, each accident listing has information on casualties,\\
 of which there may be many. As this is a cycling application, I only want data on accidents where at least one of the casualties was a cyclist. The API provides a lot of data, but all that is relevant is
 the latitude and longitude, as well as the severity of the incident. All of this data was ultimately saved to a file called \texttt{output.json}.
  The intended format of the file data will be saved in is shown in Figure \ref{accident format}.
@@ -370,7 +376,8 @@ the latitude and longitude, as well as the severity of the incident. All of this
 I decided to use Kotlin for this project. Kotlin is related to Java in that it allows access to all the Standard Java Libraries, as well
 as external ones, and it runs in the Java Virtual Machine. Kotlin does not need to maintain backwards compatability with old Java code,
 so it has a much cleaner API and has nice syntax. As this was a new project not dependent on using Java code Kotlin was an obvious choice. 
-Furthermore, Java code can be easily translated into Kotlin code, so I could code things in Java then translate over if necessary.\\
+Furthermore, Java code can be easily translated into Kotlin code, so I could code things in Java then translate over if necessary. Like Java, kotlin allows Object-Oriented-Programming, so that
+is the approach I will be taking in this project.\\
 As seen in Figure \ref{uml}, I decided to define 3 main classes for my NEA. \texttt{OpenStreetMap} contains methods for parsing OSM files and creating a graph.
 \texttt{OpenStreetMap} contains a single instance of the \texttt{GeographicGraph} class by object composition. This is because there will only be one \texttt{GeographicGraph}
 class associated with a given OSM file, and this system could be easily extended to hold information on two separate graph areas at the same time, which could be used if I wanted
@@ -661,10 +668,136 @@ Another useful optimisation technique is to refill the priority queue every so o
 So that intensive workloads such as contracting the graph do not need to be repeated a facility for saving and loading this information must exist.
 It would be possible to write some manual serialisation code, but it is simpler to just save the whole class objects. Kotlin has a 
 fairly easy to use serialisation library that can serialise whole objects to disk\cite{kotlinh}. The standard mode for this is serialising to JSON, but as my files will likely be very large, my design uses the alternate CBOR encoding instead.
+As mentioned previously, \texttt{GeographicNode} objects cannot contain other \texttt{GeographicNode} objects. This is because the kotlin serialiser will get stuck recursively serialising the same nodes. 
 CBOR\footnote{Concise Binary Object Representation} can be used for more consise binary representation of JSON objects.
 \subsubsection{User Interface}
-\textcolor{red}{Do this section}
+My design calls for a simple terminal based user interface. Users should be able to load maps and preprocessed data from pre existing files, and trigger addtional preprocessing at different levels. This can be simply implemented by means of a loop where users can choose options or end the program.
+\subsubsection{Route Output}
+In order to fulfil specification point \ref{followpossible}, the route must be output in a format that is not just a list of coordinates. Writing software that can use a route to give turn by turn directions, 
+along with route recalculation when straying off the route is beyond the bounds of this project. However such software does already exist. One example of this is Osmand, an application that uses Open Street Map data to provide a routing application.
+Osmand can generate it's own routes, but it can also be used to follow routes stored in gpx files. GPX files are a subset of XML that can be used to store geographic data such as routes. Many other applications accept these, so a user would not 
+be limited to Osmand. Writing to a GPX file manually would be boring, so my design calls for the use of a library. 
+\newpage
 \section{Technical Implementation}
+\subsection{Overview}
+\begin{figure}[p]
+\begin{verbatim}
+$ tree
+.
+├── accidents
+│   ├── 2005.json
+│   ├── 2006.json
+│   ├── 2007.json
+│   ├── 2008.json
+│   ├── 2009.json
+│   ├── 2010.json
+│   ├── 2011.json
+│   ├── 2012.json
+│   ├── 2013.json
+│   ├── 2014.json
+│   ├── 2015.json
+│   ├── 2016.json
+│   ├── 2017.json
+│   ├── 2018.json
+│   └── 2019.json
+├── build.gradle.kts
+├── download.py
+├── gradlew
+├── gradlew.bat
+├── maps
+│   ├── course_m25_boundary.json
+│   ├── cyclable.osm
+│   ├── cyclable.osm.pbf
+│   ├── goldhawk.osm
+│   ├── testarea.json
+│   ├── testarea.osm
+│   └── ways.osm
+├── output.json
+├── parse.py
+├── display.py
+├── route.gpx
+├── savedGraph.bin
+├── settings.gradle.kts
+└── src
+   └── main
+        └── kotlin
+            ├── ContractableGraph.kt
+            ├── ContractableGraphTest.kt
+            ├── DoubleTuple.kt
+            ├── GeographicGraph.kt
+            ├── GeographicGraphTest.kt
+            ├── IntTuple.kt
+            ├── Main.kt
+            ├── OpenStreetMap.kt
+            └── OpenStreetMapTest.kt
+6 directories, 42 files
+\end{verbatim}
+\caption{Project file structure. Automatically generated files have been omitted}
+\label{fsystem}
+\end{figure}
+Figure \ref{fsystem} shows the complete file system. The \texttt{accidents} subfolder is used to generate \texttt{output.json}, and the \texttt{maps} folder contains different \texttt{osm} files for 
+different areas. All of the \texttt{.py} files are used in the creation of \texttt{output.json} and all of the files in \texttt{src/main/kotlin} are make up the program as a whole, with \texttt{Main.kt} as the entry point.
+\subsection{Accident Download System}
+\label{Accident Download System Implementation}
+As this system only really needs to be run once, I just wrote some hacky python scripts to do this.
+As mentioned in Section \ref{Pulling from the TFL API}, I used a simple script called \texttt{download.py} to pull all the relevant accident data from the TFL API and store it in the \texttt{accidents} folder.
+\begin{lstlisting}[language=python]
+import requests
+import json
+for year in range(2005,2020):
+    print(year)
+    response = requests.get(f"https://api.tfl.gov.uk/AccidentStats/{year}")
+    with open(f"accidents/{year}.json","w") as yearfile:
+        json.dump(response.json(),yearfile)
+\end{lstlisting}
+In order to extract useful information from these files, I used \texttt{parse.py} to extract all those accidents where one of the listed casulaties was a cyclist. While data exists between 2005 and 2019,
+when looking at some of the areas with high accident density, I found that the accident density had greatly decreased in recent years. This led to the realisation that the TFL accident data was not solely collected 
+for the purpose of providing interesting data for A-Level NEA coursework, and that TFL was probably looking at the data as well and fixing those areas which were lethal. Thus I decided to only use accidents from after 2010.
+\begin{lstlisting}[language=python]
+import json
+#we want to parse for accidents that happened to cyclists and store the severity and the location
+accidents = []
+for year in range(2010,2020):
+    print(len(accidents), year)
+    with open(f"accidents/{year}.json","r") as outfile:
+        data = json.load(outfile)
+    for x in data:
+        try:
+            if x["casualties"]["mode"] == "PedalCycle":
+                accidents.append([x["lat"],x["lon"],x["severity"]])
+        except:
+            if len([person for person in x["casualties"] if person["mode"] == "PedalCycle"]) >= 1:
+                accidents.append([x["lat"],x["lon"],x["severity"]])
+with open("output.json","w") as outfile:
+    json.dump(accidents,outfile)
+\end{lstlisting}
+I also wrote a small visualisation script using matplotlib to verify that the data was dense enough to be useful and imported correctly. I called this \texttt{display.py}. 
+\begin{lstlisting}[language=python]
+import json
+import matplotlib.pyplot as plt
+x = []
+y = []
+with open("output.json","r") as inputfile:
+    data = json.load(inputfile)
+for accident in data:
+    x.append(accident[1])
+    y.append(accident[0])
+    print(accident[0],accident[1])
+plt.scatter(x,y,0.05)
+plt.show()
+\end{lstlisting}
+\begin{figure}[h]
+    \begin{center}
+    \includegraphics[width=18cm]{chart.png}
+    \end{center}
+    \caption{Plot of all accidents in which there were injured cyclists in London since 2010}
+    \label{chart}
+\end{figure}
+This generated the plot shown in Figure \ref{chart}. Major roads are clearly visible, so a route finding algorithm will be able to avoid these. One problem that was apparent from the data was that there 
+are significantly more accidents in central London then in the suburbs. Central London may be more dangerous, but there are also far more cyclists, and as I cannot get road usage data easily routes will probably be biased against
+central london, possibly causing them to go around. Hopefully, the distance cost will pull routes back towards central London, and they will instead pick between roads for safety on a more local level.
+\subsection{Route Finding System}
+The accident download system of the previous section only really serves to provide the input for this system. This system \textit{is the project}. 
 \section{Testing}
 \subsection{Reliability Testing}
 \subsection{Performance Testing}
