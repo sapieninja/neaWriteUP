@@ -19,11 +19,12 @@
 \fancyhf{}
 \setlength{\headheight}{15.2pt}
 \fancyhead[LE,RO]{ Optimised Safe Route Finding NEA }
-\fancyfoot[LE,RO]{ \thepage}
+\fancyfoot[LE,RO]{ \thepage }
 \fancyfoot[RE,LO]{ \textit{Max Bowman 2022} }
 \usepackage{mdframed}
 \newmdtheoremenv[linewidth = 1pt]{theorem}{Theorem}
 \usepackage{refcount}
+\usepackage{datetime}
 \newcommand{\pagedifference}[2]{%
   \number\numexpr\getpagerefnumber{#2}-\getpagerefnumber{#1}\relax}
 %stuff for graphs etc
@@ -122,7 +123,7 @@
 
     \vspace{60pt}
 
-    {\small Last updated \today}
+    {\small Last updated \currenttime, \today}
 
     {\small Pages: \pagedifference{start}{end}}
     
@@ -797,7 +798,31 @@ This generated the plot shown in Figure \ref{chart}. Major roads are clearly vis
 are significantly more accidents in central London then in the suburbs. Central London may be more dangerous, but there are also far more cyclists, and as I cannot get road usage data easily routes will probably be biased against
 central london, possibly causing them to go around. Hopefully, the distance cost will pull routes back towards central London, and they will instead pick between roads for safety on a more local level.
 \subsection{Route Finding System}
-The accident download system of the previous section only really serves to provide the input for this system. This system \textit{is the project}. 
+The accident download system of the previous section only really serves to provide the input for this system. This system \textit{is the project}. \textcolor{red}{Add big UML class diagram thing here}.
+\subsubsection{Parsing Open Street Map Data}
+\textcolor{red}{Add a UML class diagram of OpenStreetMap}
+The \texttt{OpenStreetMap} class contains the methods for parsing \texttt{.osm} files and forming a new \texttt{GeographicGraph} class. Some of these methods cannot be called in the init method of \texttt{GeographicGraph} because 
+they operate on the graph after it has been populated by \texttt{parseXML}, so they are placed in the constructor for \texttt{OpenStreetMap}. This constructor calls \texttt{parseXML}, which is shown in Figure \ref{parseXML}.
+\begin{figure}[h]
+\begin{lstlisting}[language=kotlin]
+private fun parseXML(filename: String) {
+    val stream = File(filename).inputStream()
+    val saxReader = SAXReader()
+    val cyclableDocument = saxReader.read(stream)
+    val root: Element = cyclableDocument.rootElement
+    val it: Iterator<Element> = root.elementIterator()
+    while (it.hasNext()) {
+        val element: Element = it.next()
+        when (element.qName.name) {
+            "node" -> processNode(element)
+            "way" -> processWay(element)
+            }
+        }
+    }
+\end{lstlisting}
+\caption{The \texttt{parseXML function from OSM}}
+\label{parseXML}
+\end{figure}
 \section{Testing}
 \subsection{Reliability Testing}
 \subsection{Performance Testing}
