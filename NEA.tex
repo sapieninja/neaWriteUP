@@ -396,14 +396,14 @@ Openstreetmap has an API for requesting parts of the map, but it does not allow 
  Furthermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON\cite{geojsondefinition} file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
  of the M25 boundary, and used the following command\footnote{I used the OSM manipulation tool Osmium} to cut out London: 
  \begin{verbatim}
-     $osmium extract -p course_m25_boundary.json united_kingdom.osm.pbf -o london.osm
+$osmium extract -p course_m25_boundary.json united_kingdom.osm.pbf -o london.osm
  \end{verbatim}
- This file could be used by my program, as it intelligently avoids parsing non-routable ways, but I decided to further reduce the file size by removing all nodes and ways that were not part of highways.
+ This file could be used by my program, as it intelligently avoids parsing non-routable ways and, but I decided to further reduce the file size by removing all nodes and ways that were not part of highways.
  This was just for quality of life, as it makes parsing the file much faster.
  \begin{verbatim}
-    $osmium tags-filter london.osm nw/highway -o ways.osm
+$osmium tags-filter london.osm nw/highway -o ways.osm
  \end{verbatim}
- This created a 370MB file called \texttt{ways.osm}. I could have reduced this further by removing the ways that are irrelevant to me, but I decided to do that in the parser so that it would be
+ This created a 370MB file called \texttt{ways.osm}. I could have reduced this further by removing the ways that are irrelevant to the program, but I decided to do that in the parser so that it would be
  more easily configurable.
 \paragraph{Parsing the file}
 Open Street Map files are built out of 3 main elements \cite{osmwikipage}:
@@ -995,7 +995,7 @@ fun pruneDisconnected() {
 }
 \end{lstlisting}
 I had to slightly modify Kosaraju's Algorithm\cite{wikipedia_2022}, as it called for the use of recursive functions. As the strongly connected component that my program uses to represent London has more than a million nodes, any recursive
-solution was clearly going to run out of stack depth or stack space. Therefore I modified it to use a stack based approach, using the stack \texttt{searchStack}, and the list \texttt{postOrder}.\\ In order to avoid rewriting the subfunction \texttt{getPostOrderTraversal} for the case in which the search is performed backwards, I passed in a lambda function that is used to find either outgoing or incoming neighbours. 
+solution was clearly going to run out of stack depth or stack space. Therefore I modified it to use a iterative approach, using the stack \texttt{searchStack}, and the list \texttt{postOrder}.\\ In order to avoid rewriting the subfunction \texttt{getPostOrderTraversal} for the case in which the search is performed backwards, I passed in a lambda function that is used to find either outgoing or incoming neighbours. 
 Once all the strongly connected components are placed in the HashMap \texttt{components}, the largest one can be quickly acertained. From there, all that is required is the actual pruning of the process.
 First, the \texttt{vertices} are filtered for nodes that are in the largest strongly connected component, then all of these vertices have their connections filtered to ensure that traversal algorithms do not attempt to lookup vertices which no longer exist.
 \subparagraph{Setting up the R*Tree}
@@ -1013,7 +1013,7 @@ fun setupRTree() {
     nodeTree = RTree.star().maxChildren(28).create(nodeList)
 }
 \end{lstlisting}
-The function also includes a safety check to make sure that the R*Tree has not been loaded before, as if it had the items would be added twice. 
+The function also includes a safety check to make sure that the R*Tree has not been loaded before, as if it had the entries would be added twice. 
 \newpage
 \subparagraph{Gathering Weights}
 This system simply reads the output from the Accident Download System, and attaches weights to the nearest node to every accident. I decided on the arbitrary scoring system of 1 point for Slight accidents, 2 points for Severe accidents, and 3 points for Fatal accidents. 
@@ -1022,18 +1022,16 @@ fun gatherWeights() {
     val accidentFile = File("output.json")
     val accidents = JSONArray(accidentFile.inputStream().readBytes().toString(Charsets.UTF_8))
     for (accident in accidents) {
-        val parsedAccident = accident.toString().split(",")//hacky but will work
-        val latitude: Double = parsedAccident[0].substring(1).toDouble()
-        val longitude: Double = parsedAccident[1].toDouble()
-        val severity = parsedAccident[2].substring(1, parsedAccident[2].length - 2)
+        val parsedAccident = accident as JSONArray
+        val latitude: Double = (parsedAccident[0] as BigDecimal).toDouble()
+        val longitude: Double = (parsedAccident[1] as BigDecimal).toDouble()
+        val severity = parsedAccident[2] as String
         try {
             val additionNode = vertices[getNearestNode(latitude, longitude)]!!
-            if (additionNode != null) {
-                when (severity) {
-                    "Slight" -> additionNode.weight += 1
-                    "Severe" -> additionNode.weight += 2
-                    "Fatal" -> additionNode.weight += 3
-                }
+            when (severity) {
+                "Slight" -> additionNode.weight += 1
+                "Severe" -> additionNode.weight += 2
+                "Fatal" -> additionNode.weight += 3
             }
         } catch (e: InvalidParameterException) {
             //In this case we can still apply all the other accidents, even if this accident doesn't match well.
@@ -1061,15 +1059,100 @@ The \texttt{InvalidParameterException} is thrown by \texttt{getNearestNode} if t
 Finally, all known safe nodes have their weights set to 0. This completes the graph setup.
 \paragraph{Graph Queries}
 \texttt{GeographicGraph} has 3 main methods that will be queried by the user facing code. These are \texttt{getRandomId}, \texttt{getNearestNode}, and \texttt{findRoute}. \texttt{getRandomId} just returns a random vertice id from the vertices HashMap, and \texttt{getNearestNode} has already been explained.
-\texttt{findRoute} provides functionality for deciding which route finding method to use, then executing it.
+\texttt{findRoute} provides functionality for deciding which route finding method to use, then executing it. In my design I allowed only one instance of \texttt{contractedGraph}, but when implementing I decided to change this to allow as many contractions as wanted. This was implemented through a HashMap that holds all the instances of \texttt{contractedGraph}, which are used to find routes when matching parameters are given. 
+So the \texttt{findRoute} function calls the corresponding function in the preprocessed graph, or the private function \texttt{findRouteNonContracted}. This is shown below.
+\begin{lstlisting}[language=kotlin]
+/**
+* Basic dijkstra
+*/
+private fun calculateRoute(
+    start: Long,
+    end: Long,
+    accidentsPerKilometre: Double,
+    accidentsPerTurn: Double
+): Pair<MutableList<Long>, Double> {
+    val F = PriorityQueue<DoubleTuple>()
+    val dist = HashMap<Long, Double>()
+    val prev = HashMap<Long, Long>()
+    dist[start] = 0.0
+    prev[start] = -1
+    var u: Long
+    val toAdd = DoubleTuple(start, 0.0)
+    F.add(toAdd)
+    while (F.size != 0) {
+        val item = F.poll()
+        u = item.id
+        if (dist[u] != item.dist) continue
+        if (u == end) {
+            return Pair(solution(end, prev), dist[end]!!)
+        }
+        for (neighbour in vertices[u]?.connections!!) {
+            var alt = dist[u]?.plus(vertices[neighbour]?.weight!!)
+            alt = alt?.plus(getDistanceCost(u, neighbour) * accidentsPerKilometre)
+            alt = alt?.plus(getTurnCost(prev[u]!!, u, neighbour, accidentsPerTurn))
+            if (alt != null) {
+                if (!dist.containsKey(neighbour) || alt < dist[neighbour]!!) {
+                    dist[neighbour] = alt
+                    prev[neighbour] = u
+                    val toAdd = DoubleTuple(neighbour, dist[neighbour]!!)
+                    F.add(toAdd)
+                }
+            }
+        }
+    }
+    throw InvalidParameterException()
+}
+
+fun findRouteNonContracted(
+    start: Long,
+    end: Long,
+    accidentsPerKilometre: Double,
+    accidentsPerTurn: Double
+): MutableList<Long> {
+    return calculateRoute(start, end, accidentsPerKilometre, accidentsPerTurn).first
+}
+
+fun solution(end: Long, prev: HashMap<Long, Long>): MutableList<Long> {
+    val route = mutableListOf<Long>()
+    var current = end
+    while (current.toInt() != -1) {
+        route.add(current)
+        current = prev[current]!!
+    }
+    return route.asReversed()
+}
+\end{lstlisting}
+The notable change between this version of the code and what was designed is that when a tentative distance is updated the old value in the priority queue is not removed. This is because removing items from the middle of priority queues can be quite expensive,
+and it is actually cheaper just to leave it in there and just ignore it when eventually polled.\\
+The \texttt{DoubleTuple} class is used to allow nodes weights in the priority queue to be based on their distance from the start node rather than the value of the node. The \texttt{DoubleTuple} class implements \texttt{Comparable}, 
+so that it can be compared to other \texttt{DoubleTuple} objects by the distance. This allows the tuples to be packed into the priority queue with a weighting based on distance.
+\begin{lstlisting}[language=kotlin]
+class DoubleTuple(val id : Long, val dist : Double) : Comparable<DoubleTuple>
+{
+    override fun compareTo(other: DoubleTuple): Int {
+        if(dist > other.dist)
+        {
+            return 1
+        }
+        else if(dist == other.dist)
+        {
+            return 0
+        }
+        else
+        {
+            return -1
+        }
+    }
+ }
+\end{lstlisting}
 \subsection{Graph Contraction and Querying}
+The \texttt{ContractableGraph} class 
 \subsection{User Interface}
 \subsection{Serialisation}
 \section{Testing}
 \subsection{Reliability Testing}
 \subsection{Performance Testing}
 \section{Evaluation}
-Therefore, the project was a success.
 \newpage
 \printbibliography
 \label{end}
