@@ -1,6 +1,7 @@
 \documentclass[11pt,twoside,a4paper]{article}
 % Open Sans font for the whole document
 \usepackage[T1]{fontenc}
+%\usepackage[draft]{graphics}
 \usepackage[a4paper, margin=1.91cm, top=2.91cm, bottom=2.91cm]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{pdfpages}
@@ -505,9 +506,10 @@ route finding algorithms.
 \subsubsection{Representing and Querying the Graph}
 As shown in Figure \ref{uml}, my design uses a class called \texttt{GeographicGraph} to represent London\footnote{Other areas could be represented as well}. There are many graph libraries available to java programs, but creating my own implementation
  will allow me more flexibility in implementation of methods that relate to real world applications. As shown in Figure \ref{uml}, the \texttt{GeographicGraph} class has some major methods that need to be implemented. \texttt{gatherWeights} will 
- read in a accident file in the format specified in Figure \ref{accident format}, and attach the accident to the nearest node in the grap. \texttt{findRoute} will find the best route between two nodes in the graph.
+ read in a accident file in the format specified in Figure \ref{accident format}, and attach the accident to the nearest node in the graph. \texttt{findRoute} will find the best route between two nodes in the graph.
 There will also need to be other functions for maintaining and querying the data structure.
 \paragraph{Representing the Graph}
+\label{Rtree}
 There are many possible methods of representing Graphs, such as using an adjacency matrix, or an adjacency list. An adjacency matrix would not work in this case, as the graph is very sparse. An adjacency list could work, but maintaining information about the nodes 
 separately from the adjacency list would be difficult. Instead, my design uses an OOP approach, where every relevant node in the OSM representation is converted into an equivalent node represented by a subclass called \texttt{GeographicNode}.
 This is advantageous because it allows associated data, such as the number of accidents attached and the coordinates, to be stored in the same place. As shown in Figure \ref{geographicnode}, the connections would be represented as a HashSet. Ideally, this would contain
@@ -533,37 +535,58 @@ The \texttt{OpenStreetMap} class deals with parsing the XML, but it has to inter
 Due to the sequential order of parsing the OSM representation of the Graph, some nodes may be left disconnected because the way that connects them together was not parsed. If the system is asked to find a route from a 
 node that is not connected to any other node, it will of course fail. This could lead to a crash, which would be in contravention of specification point \ref{nocrashy}, or at least a bad user experience, if given an error for seemingly sensible inputs.
 Another problem could be that the Graph might have multiple components, perhaps because access to an area was cut off by safety protocols. Whatever the cause, both of these problems can be averted by removing all nodes that cannot be routed to by one location in the 
-main component. This can be done by picking any node from which all other nodes can be connected to, finding the whole component, then removing any \texttt{GeographicNode} objects that are not in that component from the lookup table they are stored in.
+main component. This can be done by picking any node from which all other nodes can be connected to, finding the whole component, then removing any \texttt{GeographicNode} objects that are not in that component from the lookup table they are stored in. However there are two problems with this approach:
+ the node that all other nodes are connected to must be picked manually, and the component is not guaranteed to be strongly connected. What this means is that while it is possible to reach any node in the component from the start node it is not necessarily for every node in the component. 
+A component for which this would work is called a strongly connected component. If the function finds all strongly connected components and then assumes that the largest one is the one that is wanted the chance of allowing unsolvable queries is eliminated. 
+One algorithm for finding all strongly connected components is Kosaraju's Algorithm\cite{wikipedia_2022}. This algorithm uses the fact that strongly connected components remain when all edges are reversed, and relies on a post-order DFS. The DFS is run first in the right direction, then in reverse to find the strongly connected components.
+The following steps are followed.
+\begin{lstlisting}
+L <- []
+visited <- []
+FOR u in G:
+    Visit(u)
+Subroutine Visit(u):
+    if u NOT IN visited:
+        ADD u TO visited
+        for each neighbour v:
+            Visit(v)
+        prepend u to L
+FOR u in L:
+    Assign(u,u)
+Subroutine Assign(u,v):
+    if u NOT assigned:
+        assign u to v
+        for each incoming neighbour p:
+            Assign(p,v)
+\end{lstlisting}
+The ordering of L is important as it represents the direction in which connections are made in the components. These components are then checked to find the strongly connected components. Each strongly connected component will take a continuous region of L. 
+Implementation of this may require modifying the \texttt{GeographicNode} class to also keep track of incoming connections.  
 \paragraph{Querying the Graph}
 \begin{figure}[t]
     \begin{center}
-\begin{verbatim}
-1  function Dijkstra(Graph, source, target):
-2
-3      for each vertex v in Graph.Vertices:            
-4          dist[v] ← INFINITY                 
-5          prev[v] ← UNDEFINED                
-6          add v to Q                     
-7      dist[source] ← 0                       
-8     
-9      while Q is not empty:
-10          u ← vertex in Q with min dist[u]   
-11          remove u from Q
-12          if u == target: break
-13                                        
-14          for each neighbor v of u still in Q:
-15              alt ← dist[u] + Graph.Edges(u, v)
-16              if alt < dist[v]:              
-17                  dist[v] ← alt
-18                  prev[v] ← u
-19
-20  S ← empty sequence
-21  u ← target
-22  if prev[u] is defined or u = source:
-23      while u is defined:
-24         insert u at the beginning of S
-25         u ← prev[u]
-\end{verbatim}
+\begin{lstlisting}
+function Dijkstra(Graph, source, target):
+     for each vertex v in Graph.Vertices:            
+         dist[v] <- INFINITY                 
+         prev[v] <- UNDEFINED                
+         add v to Q                     
+     dist[source] <- 0                           
+     while Q is not empty:
+          u <- vertex in Q with min dist[u]   
+          remove u from Q
+          if u == target: break                                        
+          for each neighbor v of u still in Q:
+              alt <- dist[u] + Graph.Edges(u, v)
+              if alt < dist[v]:              
+                  dist[v] <- alt
+                  prev[v] <- u
+  S <- empty sequence
+  u <- target
+  if prev[u] is defined or u = source:
+      while u is defined:
+         insert u at the beginning of S
+         u <- prev[u]
+\end{lstlisting}
 \end{center}
 \caption{Dijkstra's algorithm modified from Wikipedia\cite{dijkstrapseudo}}
 \label{dijkstrapseudo}
@@ -573,7 +596,7 @@ that mode should be used. Otherwise Dijkstra's shortest path algorithm should be
 \subparagraph{Dijkstra's Algorithm}
 Dijkstra's Algorithm\cite{Dijkstra1959} is a immensely popular algorithm for finding routes in graphs. It builds up a tree of nodes that it knows the shortest route to until said tree contains the target node. It does this by iterative "settling" of nodes.
 The known unsettled node that has the shortest route cost to the start node is settled, and all of it's neighbours are added to a list of nodes to be settled. Every node has a tentative \texttt{dist} value and a tentative \texttt{prev} value, defined by the currently known shortest path to that route.
-When the node is settled this value is known to be true. This process is repeated until the algorithm is completed.Pseudocode for Dijkstra's algorithm is shown in Figure \ref{dijkstrapseudo}. A Priority Queue can be used to find the next node to process. This is detailed in the Final Design section.
+When the node is settled this value is known to be true. This process is repeated until the algorithm is completed. Pseudocode for Dijkstra's algorithm is shown in Figure \ref{dijkstrapseudo}. A Priority Queue can be used to find the next node to process. This is detailed in the Final Design section.
 \\A variant of Dijkstra's algorithm called A*\cite{Hart1968} uses heuristics to reduce the required search space. The heuristic estimates the distance to the end node, meaning that nodes are vaguely settled in the right direction.
 However this heuristic has to be "admissible" if the shortest possible route is to be found. This means that it never makes overestimates. As the density of accidents cannot be predicted between any point and the end node, the heuristic would be extremely loosely fitting, and would 
 fail to significantly reduce the search space. 
@@ -797,13 +820,19 @@ plt.show()
 This generated the plot shown in Figure \ref{chart}. Major roads are clearly visible, so a route finding algorithm will be able to avoid these. One problem that was apparent from the data was that there 
 are significantly more accidents in central London then in the suburbs. Central London may be more dangerous, but there are also far more cyclists, and as I cannot get road usage data easily routes will probably be biased against
 central london, possibly causing them to go around. Hopefully, the distance cost will pull routes back towards central London, and they will instead pick between roads for safety on a more local level.
+\newpage
 \subsection{Route Finding System}
-The accident download system of the previous section only really serves to provide the input for this system. This system \textit{is the project}. \textcolor{red}{Add big UML class diagram thing here}.
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=10cm]{finaluml.png}
+    \end{center}
+    \caption{Final Project UML Diagram}
+    \label{finaluml}
+\end{figure}
+The accident download system of the previous section only really serves to provide the input for this system. This system \textit{is the project}. Figure \ref{finaluml} shows the completed UML diagram. \texttt{IntTuple} and \texttt{DoubleTuple}, which are used in priority queues,  have been added since the class hierachy was designed but overall the structure has remained the same.
 \subsubsection{Parsing Open Street Map Data}
-\textcolor{red}{Add a UML class diagram of OpenStreetMap}
 The \texttt{OpenStreetMap} class contains the methods for parsing \texttt{.osm} files and forming a new \texttt{GeographicGraph} class. Some of these methods cannot be called in the init method of \texttt{GeographicGraph} because 
-they operate on the graph after it has been populated by \texttt{parseXML}, so they are placed in the constructor for \texttt{OpenStreetMap}. This constructor calls \texttt{parseXML}, which is shown in Figure \ref{parseXML}.
-\begin{figure}[h]
+they operate on the graph after it has been populated by \texttt{parseXML}, so they are placed in the constructor for \texttt{OpenStreetMap}. This constructor calls \texttt{parseXML}.
 \begin{lstlisting}[language=kotlin]
 private fun parseXML(filename: String) {
     val stream = File(filename).inputStream()
@@ -816,13 +845,226 @@ private fun parseXML(filename: String) {
         when (element.qName.name) {
             "node" -> processNode(element)
             "way" -> processWay(element)
+        }
+    }
+}
+\end{lstlisting}
+All that \texttt{parseXML} does is iterate through all of the subelements in the input xml file, then calls either \texttt{processNode} or \texttt{processWay}. The \texttt{processNode} function just adds all nodes it sees to the \texttt{cyclableGraph}, and the real logic is dealt with in \texttt{processWay}.
+\begin{lstlisting}[language=kotlin]
+private fun processWay(way: Element) {
+    var oneWay = false
+    var cycleWay = false
+    var slowWay = false
+    val nodes = mutableListOf<Long>()
+    val acceptedRoads = mutableListOf(
+        "bridleway",
+        "trunk",
+        "pedestrian",
+        "service",
+        "primary",
+        "secondary",
+        "tertiary",
+        "unclassified",
+        "residential",
+        "primary_link",
+        "secondary_link",
+        "tertiary_link",
+        "living_street",
+        "cycleway",
+        "footway"
+    )
+    val disallowedSurfaces = mutableListOf("unpaved", "fine_gravel", "gravel", "dirt", "grass", "pebblestone")
+    val disallowedAccess = mutableListOf("no")
+    val highSpeed = mutableListOf("40 mph", "50 mph", "60 mph", "70 mph")
+    val tags = HashMap<String, String>()
+    val it = way.elementIterator()
+    while (it.hasNext()) {
+        val subElement = it.next()
+        if (subElement.qName.name == "nd") {
+            nodes.add(subElement.attribute("ref").value.toLong())
+        }
+        if (subElement.qName.name == "tag") {
+            tags[subElement.attributeValue("k")] = subElement.attributeValue("v")
+        }
+    }
+    val highwayType = tags["highway"].toString()
+    val access = tags["access"].toString()
+    val surface = tags["surface"].toString()
+    val note = tags["note"].toString()
+    val bicycle = tags["bicycle"].toString()
+    val oneway = tags["oneway"].toString()
+    val maxspeed = tags["maxspeed"].toString()
+    val towpath = tags["towpath"].toString()
+    val motor = tags["motor_vehicle"].toString()
+    if (!acceptedRoads.contains(highwayType)) return
+    if (highSpeed.contains(maxspeed)) return
+    if (oneway == "yes") oneWay = true
+    if (highwayType == "cycleway") cycleWay = true
+    if (highwayType == "footway") {
+        cycleWay = true
+        slowWay = true
+    }
+    if (highwayType == "pedestrian") {
+        cycleWay = true
+        if (bicycle != "designated") {
+            slowWay = true
+            }
+    }
+    if (note == "towpath") return
+    if (disallowedAccess.contains(access) && bicycle != "yes") return
+    if (disallowedAccess.contains(bicycle)) return
+    if (disallowedSurfaces.contains(surface)) return
+    if (!acceptedRoads.contains(highwayType)) return
+    if (towpath == "yes") return
+    if (motor == "private") cycleWay = true
+    if (cycleWay) {
+        cyclableGraph.safeNodes.addAll(nodes)
+    }
+    if (slowWay) {
+        cyclableGraph.slowNodes.addAll(nodes)
+    }
+    for (i in 1 until nodes.size) {
+        cyclableGraph.addEdge(nodes[i - 1], nodes[i], oneWay)
+    }
+}
+\end{lstlisting}
+All of the relevant values from \texttt{tags} are converted to string in order to eliminate the need for any null checks. If a way doesn't have a certain tag the value will be \texttt{"null"}, which is of course not in any of the allow or disallow lists.
+If the way is determined to be "safe" or "slow", all the nodes in the way are added to the relevant set in \texttt{cyclableGraph}. 
+\subsection{Graph Representation}
+As shown in Figure \ref{finaluml}, the \texttt{GeographicGraph} class is used to represent London. This is through the \texttt{GeographicNode} inner class, which stores both incoming and outgoing connections as well as the weight of the node. 
+\paragraph{Graph Setup}
+Once all the nodes and connections have been added and the \texttt{safeNodes} and \texttt{slowNodes} sets have been filled up by the parsing functions in \texttt{OpenStreetMap}, some other functions need to be run to set up the graph for operations and otherwise clean up.
+These functions are called from the intialisation method of \texttt{OpenStreetMap}. 
+\subparagraph{Graph Pruning}
+The first function called is \texttt{pruneDisconnected}. This function ensures that the graph is strongly connected by finding the largest strongly connected component and deleting all nodes not in it. This ensures that the program can easily 
+conform to Specification Point \ref{nocrashy}, as it ensures that it is possible to find a route between any two points in the graph. 
+\begin{lstlisting}[language=kotlin]
+fun pruneDisconnected() {
+    fun getPostOrderTraversal(vertice : Long, visited : HashSet<Long>, getNeighbours : (Long) -> HashSet<Long>): List<Long> {
+        var searchStack = Stack<Long>()
+        var postOrder = LinkedList<Long>()
+        searchStack.add(vertice)
+        while (searchStack.size != 0)
+        {
+            var current = searchStack.pop()
+            if (!visited.contains(current))
+            {
+                visited.add(current)
+                postOrder.add(current)
+                for (neighbour in getNeighbours(current))
+                {
+                    searchStack.push(neighbour)
+                }
+            }
+        }
+        return postOrderStack
+    }
+    var visited = HashSet<Long>()
+    val L = LinkedList<Long>()
+    for (vertice in vertices)
+    {
+        for (item in getPostOrderTraversal(vertice.key,visited) { id -> vertices[id]!!.connections })
+        {
+            L.addFirst(item)
+        }
+    }
+    visited = HashSet<Long>()
+    val components = HashMap<Long, HashSet<Long>>()
+    for (vertice in L)
+    {
+        var postOrder = getPostOrderTraversal(vertice,visited) { id -> vertices[id]!!.incomingConnections }
+        if (postOrder.size != 0)
+        {
+            components[vertice] = HashSet<Long>()
+            for (item in postOrder)
+            {
+                components[vertice]?.add(item)
             }
         }
     }
+    val mainComponent = components.maxByOrNull { component -> component.value.size }!!
+    val before = vertices.size
+    vertices = vertices.filter { item -> mainComponent.value.contains(item.key) } as HashMap<Long, GeographicNode>
+    val after = vertices.size
+    println("Shrunk vertices from $before to $after")
+    for (vertice in vertices.values)
+    {
+        vertice.connections = vertice.connections.filter { id -> vertices.containsKey(id) }.toHashSet()
+        vertice.incomingConnections = vertice.incomingConnections.filter { id -> vertices.containsKey(id)}.toHashSet()
+    }
+}
 \end{lstlisting}
-\caption{The \texttt{parseXML function from OSM}}
-\label{parseXML}
-\end{figure}
+I had to slightly modify Kosaraju's Algorithm\cite{wikipedia_2022}, as it called for the use of recursive functions. As the strongly connected component that my program uses to represent London has more than a million nodes, any recursive
+solution was clearly going to run out of stack depth or stack space. Therefore I modified it to use a stack based approach, using the stack \texttt{searchStack}, and the list \texttt{postOrder}.\\ In order to avoid rewriting the subfunction \texttt{getPostOrderTraversal} for the case in which the search is performed backwards, I passed in a lambda function that is used to find either outgoing or incoming neighbours. 
+Once all the strongly connected components are placed in the HashMap \texttt{components}, the largest one can be quickly acertained. From there, all that is required is the actual pruning of the process.
+First, the \texttt{vertices} are filtered for nodes that are in the largest strongly connected component, then all of these vertices have their connections filtered to ensure that traversal algorithms do not attempt to lookup vertices which no longer exist.
+\subparagraph{Setting up the R*Tree}
+As discussed in Section \ref{Rtree}, I used an R*Tree to facilitate fast lookup of nodes from nearby coordinates. The library I used\cite{rtree} supports both iterative loading of the rtree and bulk loading. Bulk loading is faster and can result in a 
+more efficient R*Tree, so \texttt{setupRTree} uses that. 
+\begin{lstlisting}[language=kotlin]
+fun setupRTree() {
+    if (nodeTree.size() != 0) {
+        return
+    }
+    var nodeList = mutableListOf<Entry<Long, Geometry>>()
+    for (node in vertices) {
+        nodeList.add(Entries.entry(node.key, Geometries.point(node.value.longitude, node.value.latitude)))
+    }
+    nodeTree = RTree.star().maxChildren(28).create(nodeList)
+}
+\end{lstlisting}
+The function also includes a safety check to make sure that the R*Tree has not been loaded before, as if it had the items would be added twice. 
+\newpage
+\subparagraph{Gathering Weights}
+This system simply reads the output from the Accident Download System, and attaches weights to the nearest node to every accident. I decided on the arbitrary scoring system of 1 point for Slight accidents, 2 points for Severe accidents, and 3 points for Fatal accidents. 
+\begin{lstlisting}[language=kotlin]
+fun gatherWeights() {
+    val accidentFile = File("output.json")
+    val accidents = JSONArray(accidentFile.inputStream().readBytes().toString(Charsets.UTF_8))
+    for (accident in accidents) {
+        val parsedAccident = accident.toString().split(",")//hacky but will work
+        val latitude: Double = parsedAccident[0].substring(1).toDouble()
+        val longitude: Double = parsedAccident[1].toDouble()
+        val severity = parsedAccident[2].substring(1, parsedAccident[2].length - 2)
+        try {
+            val additionNode = vertices[getNearestNode(latitude, longitude)]!!
+            if (additionNode != null) {
+                when (severity) {
+                    "Slight" -> additionNode.weight += 1
+                    "Severe" -> additionNode.weight += 2
+                    "Fatal" -> additionNode.weight += 3
+                }
+            }
+        } catch (e: InvalidParameterException) {
+            //In this case we can still apply all the other accidents, even if this accident doesn't match well.
+            continue
+        }
+    }
+}
+\end{lstlisting}
+In order to find the nearest node, this function calls another function called \texttt{getNearestNode}. This is shown below.
+\begin{lstlisting}[language=kotlin]
+private fun getNearestNode(latitude: Double, longitude: Double): Long {
+    val closestNodeObserver = nodeTree.nearest(Geometries.point(longitude, latitude), 0.005, 1)
+    try {
+        val closestNode = closestNodeObserver.first()
+        return closestNode.value()
+    } catch (e: NoSuchElementException) {
+        //If this happens the coordinates are very far from the nearest node, so a appropriate node cannot be found.
+        //Therefore an error should be thrown
+        throw InvalidParameterException()
+    }
+}
+\end{lstlisting}
+The \texttt{InvalidParameterException} is thrown by \texttt{getNearestNode} if there is no node within 0.005 degrees. This is roughly half a kilometer, so all reasonable ranges of nodes can be found. Selecting a smaller value for
+ the maximum search distance makes the query faster. In \texttt{gatherWeights} this can be safely ignored as while a few coordinates might be too far away from nodes the vast majority will not be.\\
+Finally, all known safe nodes have their weights set to 0. This completes the graph setup.
+\paragraph{Graph Queries}
+\texttt{GeographicGraph} has 3 main methods that will be queried by the user facing code. These are \texttt{getRandomId}, \texttt{getNearestNode}, and \texttt{findRoute}. \texttt{getRandomId} just returns a random vertice id from the vertices HashMap, and \texttt{getNearestNode} has already been explained.
+\texttt{findRoute} provides functionality for deciding which route finding method to use, then executing it.
+\subsection{Graph Contraction and Querying}
+\subsection{User Interface}
+\subsection{Serialisation}
 \section{Testing}
 \subsection{Reliability Testing}
 \subsection{Performance Testing}
@@ -831,4 +1073,4 @@ Therefore, the project was a success.
 \newpage
 \printbibliography
 \label{end}
-\end{document}
+\end{document}     

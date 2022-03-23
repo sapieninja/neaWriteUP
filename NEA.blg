@@ -1,17 +1,18 @@
-[0] Config.pm:311> INFO - This is Biber 2.16
-[0] Config.pm:314> INFO - Logfile is 'NEA.blg'
-[68] biber:340> INFO - === Tue Mar 22, 2022, 13:06:55
-[80] Biber.pm:415> INFO - Reading 'NEA.bcf'
-[138] Biber.pm:952> INFO - Found 17 citekeys in bib section 0
-[149] Biber.pm:4340> INFO - Processing section 0
-[158] Biber.pm:4531> INFO - Looking for bibtex format file 'bibliography.bib' for section 0
-[159] bibtex.pm:1689> INFO - LaTeX decoding ...
-[170] bibtex.pm:1494> INFO - Found BibTeX data source 'bibliography.bib'
-[226] Utils.pm:384> WARN - legacy month field 'dec' in entry 'Dijkstra1959' is not an integer - this will probably not sort properly.
-[283] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[283] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[283] Biber.pm:4168> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[283] Biber.pm:4174> INFO - No sort tailoring available for locale 'en-US'
-[293] bbl.pm:654> INFO - Writing 'NEA.bbl' with encoding 'UTF-8'
-[299] bbl.pm:757> INFO - Output to NEA.bbl
-[299] Biber.pm:128> INFO - WARNINGS: 1
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is 'NEA.blg'
+[45] biber:340> INFO - === Wed Mar 23, 2022, 01:17:12
+[53] Biber.pm:418> INFO - Reading 'NEA.bcf'
+[102] Biber.pm:972> INFO - Found 18 citekeys in bib section 0
+[111] Biber.pm:4383> INFO - Processing section 0
+[117] Biber.pm:4574> INFO - Looking for bibtex file 'bibliography.bib' for section 0
+[117] bibtex.pm:1713> INFO - LaTeX decoding ...
+[125] bibtex.pm:1518> INFO - Found BibTeX data source 'bibliography.bib'
+[189] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[189] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[189] Biber.pm:4203> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[189] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[197] bbl.pm:654> INFO - Writing 'NEA.bbl' with encoding 'UTF-8'
+[201] bbl.pm:757> INFO - Output to NEA.bbl
+[201] Biber.pm:130> WARN - legacy month field 'Jan' in entry 'wikipedia_2022' is not an integer - this will probably not sort properly.
+[201] Biber.pm:130> WARN - legacy month field 'dec' in entry 'Dijkstra1959' is not an integer - this will probably not sort properly.
+[202] Biber.pm:132> INFO - WARNINGS: 2

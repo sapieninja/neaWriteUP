@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 3.1 $
+% $ biblatex bbl format version 3.2 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -34,7 +34,7 @@
       \strng{authornamehash}{1c74bd99a5a59e205d1f45582f687d96}
       \strng{authorfullhash}{1c74bd99a5a59e205d1f45582f687d96}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 17.03.2022)}
@@ -60,7 +60,7 @@
       \strng{authornamehash}{8647726d4ec2df6cff16c19b3622ca25}
       \strng{authorfullhash}{8647726d4ec2df6cff16c19b3622ca25}
       \field{sortinit}{3}
-      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Open Street Map mirror}
@@ -86,7 +86,7 @@
       \strng{authornamehash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
       \strng{authorfullhash}{0a32107ac4a83e90ce9ad1fe3dc110dd}
       \field{sortinit}{4}
-      \field{sortinithash}{e071e0bcb44634fab398d68ad04e69f4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{GeoJSON website}
@@ -112,7 +112,7 @@
       \strng{authornamehash}{01223b0485c8b39ec55efd8dbd532bf9}
       \strng{authorfullhash}{01223b0485c8b39ec55efd8dbd532bf9}
       \field{sortinit}{5}
-      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{GeoJSON download site}
@@ -139,7 +139,7 @@
       \strng{authorfullhash}{911eeffdcc6d74a689b677b74ceda544}
       \field{extraname}{1}
       \field{sortinit}{6}
-      \field{sortinithash}{7851c86048328b027313775d8fbd2131}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 17.03.2022)}
@@ -165,7 +165,7 @@
       \strng{authornamehash}{9a64b91c4b46ccf0e89e674bedd43c21}
       \strng{authorfullhash}{9a64b91c4b46ccf0e89e674bedd43c21}
       \field{sortinit}{7}
-      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{dom4j documentation site}
@@ -192,7 +192,7 @@
       \strng{authorfullhash}{911eeffdcc6d74a689b677b74ceda544}
       \field{extraname}{2}
       \field{sortinit}{8}
-      \field{sortinithash}{1b24cab5087933ef0826a7cd3b99e994}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{addendum}{(accessed: 18.03.2022)}
@@ -238,7 +238,7 @@
       \strng{authornamehash}{ae079ff90c7006fbabb37ff17ab9821a}
       \strng{authorfullhash}{92833fd4761e401fd77321fc559c3265}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Proceedings of the 1990 ACM SIGMOD international conference on Management of data - SIGMOD '90}
@@ -269,7 +269,7 @@
       \strng{authornamehash}{93e53cc3e04a5d7577d1cdb78c068b9b}
       \strng{authorfullhash}{93e53cc3e04a5d7577d1cdb78c068b9b}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Library Github Page}
@@ -278,6 +278,24 @@
       \endverb
       \verb{url}
       \verb https://github.com/davidmoten/rtree2
+      \endverb
+    \endentry
+    \entry{wikipedia_2022}{misc}{}
+      \list{publisher}{1}{%
+        {Wikimedia Foundation}%
+      }
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Wikipedia}
+      \field{month}{1}
+      \field{title}{Kosaraju's algorithm}
+      \field{year}{2022}
+      \verb{urlraw}
+      \verb https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
+      \endverb
+      \verb{url}
+      \verb https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm
       \endverb
     \endentry
     \entry{dijkstrapseudo}{online}{}
@@ -295,7 +313,7 @@
       \strng{authornamehash}{cc7046507315975b40dedee7634076d6}
       \strng{authorfullhash}{cc7046507315975b40dedee7634076d6}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{addendum}{Accessed (19.03.2022)}
       \verb{urlraw}
@@ -324,7 +342,7 @@
       \strng{authornamehash}{fa6182769b69c9f7b1559f8430d88929}
       \strng{authorfullhash}{fa6182769b69c9f7b1559f8430d88929}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Numerische Mathematik}
@@ -374,7 +392,7 @@
       \strng{authornamehash}{279a929920db407e494987a8d79f3479}
       \strng{authorfullhash}{279a929920db407e494987a8d79f3479}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{IEEE Transactions on Systems Science and Cybernetics}
@@ -407,7 +425,7 @@
       \strng{authornamehash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
       \strng{authorfullhash}{a2afdc8fa419ef29fec6b2c4a89b4a46}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \verb{urlraw}
       \verb https://commons.wikimedia.org/wiki/File:Triangle_with_notations.svg
@@ -436,7 +454,7 @@
       \strng{authornamehash}{ad4b9788506079e7af3ea46e2d9af4c9}
       \strng{authorfullhash}{ad4b9788506079e7af3ea46e2d9af4c9}
       \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Memoria sobre algunos metodos nuevos de calcular la longitud por las distancias lunares y explicaciones pr'acticas de una teor'ia para la soluci'on de otros problemas de navegaci'on}
@@ -462,8 +480,8 @@
       \strng{authorbibnamehash}{f85e97bc6f33b4ac130cca381d6068f9}
       \strng{authornamehash}{f85e97bc6f33b4ac130cca381d6068f9}
       \strng{authorfullhash}{f85e97bc6f33b4ac130cca381d6068f9}
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{How do travel planners work?}
@@ -508,7 +526,7 @@
       \strng{authornamehash}{9c470e7aa352a26fc6e131c2bc2825d3}
       \strng{authorfullhash}{8fa4fad0356835bfddc0522d9c3c74bd}
       \field{sortinit}{2}
-      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Transportation Science}
@@ -531,7 +549,7 @@
     \endentry
     \entry{kotlinh}{misc}{}
       \field{sortinit}{2}
-      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Kotlin Help}
       \field{title}{Serialization: Kotlin}
