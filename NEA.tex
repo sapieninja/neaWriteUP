@@ -1,6 +1,7 @@
-\documentclass[11pt,twoside,a4paper]{article}
+\documentclass[11pt,twoside,a4paper]{report}
 % Open Sans font for the whole document
 \usepackage[T1]{fontenc}
+\usepackage{appendix}
 \usepackage[draft]{graphics}
 \usepackage[a4paper, margin=1.91cm, top=2.91cm, bottom=2.91cm]{geometry}
 \usepackage[utf8]{inputenc}
@@ -15,6 +16,20 @@
 \usepackage{multicol}
 \usepackage{dirtytalk}
 \usepackage{pmboxdraw}
+\setcounter{secnumdepth}{4}
+\usepackage{titlesec}
+\titleformat
+{\chapter} % command
+[frame] % shape
+{\bfseries\Large\itshape} % format
+{\thechapter} % label
+{0.5ex} % sep
+{
+    \centering
+} % before-code
+[
+] % after-code
+\titlespacing{\chapter}{0.0ex}{0.0ex}{0.0ex}
 \usepackage{longtable}
 \usepackage{enumitem}
 \usepackage{array}
@@ -142,13 +157,13 @@
 \newpage
 {
     % restrict contents to chapters, sections and subsections
-    \setcounter{tocdepth}{3}
+    \setcounter{tocdepth}{2}
     \tableofcontents
 }
 
 \newpage
-\section{Analysis}
-\subsection{Problem Area}
+\chapter{Analysis}
+\section{Problem Area}
 There exist a plethora of route finding services for finding the shortest route between two points. 
 These typically optimise for the shortest time taken to travel between two points.
 Provision for cyclists can be lacking, because it typically consists of an alteration to the existing code for cars, slightly modified to allow for cycle paths and different timings for cyclists.\\
@@ -162,7 +177,7 @@ Provision for cyclists can be lacking, because it typically consists of an alter
 \end{figure}
 Many of these route finding applications don't take into account safety considerations. This is shown in Figure \ref{route} which shows the route Google Maps suggests that I cycle to school by. The route includes the A4, which is a very dangerous stretch of road for cyclists as it is a 3 lane road. 
 My plan is to use accident statistics to work out which roads are dangerous and then avoid them. This would be done by imposing a cost for going somewhere that there had been an accident.
-\subsection{Client}
+\section{Client}
 I interviewed Yuvraj Dubey, one of my classmates, to talk about whether they would be interested in a product that attempted to calculate safe routes to cycle. 
 \begin{dialogue}
     \speak{Max}Do you own a bicycle?
@@ -190,7 +205,7 @@ From this interview and my own experiences cycling in London I determined that t
 products such as Google Maps don't generate safe routes. 
 \textcolor{red}{Add a little bit more analysis to this bit}
 \newpage
-\subsection{Similar Systems}
+\section{Similar Systems}
 \begin{figure}[h]
     \begin{center}
         \includegraphics[height=10cm]{citymapper.png}
@@ -201,11 +216,11 @@ products such as Google Maps don't generate safe routes.
 \end{figure}
 There exist similar systems for route finding such as Google Maps and Citymapper. These have advantage's over what I will be able to offer such as being able to use live traffic data, and having a good user interface. Citymapper has a option to choose between "Quiet", "Regular", and "Fast" routes, which seems to be based on the type of road you are taken down.
 However they don't really take accident density into account which will be my aims.
-\subsection{Features}
-\subsubsection{Map data}
+\section{Features}
+\subsection{Map data}
 I need a data source which can provide data on roads that are legal to cycle on as well as being freely available for me to use. I settled on Open Street Map, a project which combines data gathered by volunteers into one massive freely available map. The map is downloadable in the form of a large XML file or PBF file. A PBF file is just a binary version of the same thing. I will write code to parse one of these myself.
 
-\subsubsection{Accident Data}
+\subsection{Accident Data}
 \begin{figure}
     \begin{center}
         \begin{tikzpicture}[scale=1]
@@ -229,15 +244,15 @@ Transport for London has an excellent API which you can download accident data f
 I need to find a way of mapping the coordinates onto the road network so that the danger of roads can be calculated as accurately as possible. Originally I was looking at adding the accident to the nearest edge in the graph but I decided against this after considering how intersections 
 are typically represented in OSM. Road intersections typically look something like what is represented in Figure \ref{intersection}. If an accident were to occur at the intersection it would end up being added to one of the segments leading into the intersection, so the danger would not be properly calculated if not passing through that segment. Instead I thought about adding the danger to the nearest node, so that the accident would always be counted when a route passes through that intersection.
 The other problem that I have to deal with, if adding data to the nearest node is that the density of nodes is not constant. Straighter roads will not need to use as many OSM nodes as curved roads, so i might incorrectly add cost to the wrong node. My proposed solution to this is to interpolate in nodes to a very high density to deal with this problem.
-\subsubsection{Traffic Data}
+\subsection{Traffic Data}
 The main problem with this is that the accident data is absolute and can thus not be used to calculate probabilities. For example, more accidents happen on King's Street than the dangerous road I showed earlier, but this doesn't mean that King's Street is more dangerous merely that more cyclists travel on it. This means that I need to get accurate cyclist traffic data for the whole of London in order to turn my accident statistics into accident probabilities.
 The Department for Transport and the Office for National Statistics both keep data on traffic, but it isn't applicable because cycle data is only given as a total \footnote{0.6 billion miles per year in London} and at specific count points.
 This means that I will either need to work out traffic data or get it from some dataset, such as Strava's Global Heatmap. \\
 Luckily the rest of the application can work without including traffic data so my plan is to deal with this problem at a later time or hope that the avoidance of accidents alone will be enough.  
-\subsubsection{Finding the shortest route}
+\subsection{Finding the shortest route}
 Algorithms for finding the shortest path in a Graph are abundant. The most well known is Dijkstra's algorithm, and it's variant A*. In large Graphs, both Dijkstra's algorithm and A* can be very slow. I will most likely use preprocessing based algorithms such as ALT*/Contraction Hierachies to make my program run a lot faster.
 This preprocessing will take a long time, but when completed it will significantly reduce the time taken to complete searches. 
-\subsection{Class Layout}
+\section{Class Layout}
 \begin{figure}[t]
     \begin{center}
     \includegraphics[height=8cm]{classdiagram.png}
@@ -247,7 +262,7 @@ This preprocessing will take a long time, but when completed it will significant
 \end{figure}
 As seen in Figure \ref{Class Diagram Simple}, I think I will use 3 major classes which will deal with parsing, storing, and preprocessing Graph data respectively. These will be linked by object composition
 rather than inheritance. Where possible I will use private fields and methods. 
-\subsection{Critical Path}
+\section{Critical Path}
 \begin{itemize} 
     \item Download accidents from the TFL API, parse for accidents that are of interest, and store it in a format that can be easily parsed later
     \item Import OSM map of London as a Graph which can be easily queried.
@@ -257,36 +272,36 @@ rather than inheritance. Where possible I will use private fields and methods.
     \item Write a frontend for the input of user options.
 \end{itemize}
 \newpage
-\subsection{Specification}
+\section{Specification}
 \begin{enumerate}
 \item Accident Download System
-\begin{enumerate}
-    \item The System must be capable of interfacing with the TFL API to download accidents
-    \item The System must be capable of parsing accident data to determine which accidents are relevant
-    \item The System must be capable of storing accident data in a easily accessible file for the route finding algorithm to parse
+\begin{enumerate}[label=\arabic{enumi}.\arabic*]
+    \item \label{downloadaccidents}The System must be capable of interfacing with the TFL API to download accidents
+    \item \label{parseaccidents}The System must be capable of parsing accident data to determine which accidents are relevant
+    \item \label{storeaccidents}The System must be capable of storing accident data in a easily accessible file for the route finding algorithm to parse
 \end{enumerate} 
 \item Route Finding System
 \begin{enumerate}[label=\arabic{enumi}.\arabic*]
     \item \label{item-one} The System should be capable of processing an Open Street Map map file into a suitable data structure
-    \item The System should be capable of processing the accident data from the Accident Download System
-    \item The System should be capable of attaching the data from the Accident Download System to the Suitable Data Structure from specification point \ref{item-one}
-    \item The System should be capable of using Accident Data combined with other suitable cost estimation functions to find a directed route between two points that are places on roads in London
+    \item \label{item-two}The System should be capable of processing the accident data from the Accident Download System
+    \item \label{item-three}The System should be capable of attaching the data from the Accident Download System to the suitable data structure from specification point \ref{item-one}
+    \item \label{item-four}The System should be capable of using Accident Data combined with other suitable cost estimation functions to find a directed route between two points that are places on roads in London
     \item \label{item-five}The System should always suggest a route that can be followed while observing all currently known laws of physics
-    \item The System should always suggest a route that can be followed while observing all international, national, local laws and all releveant bylaws
-    \item The System should suggest a safe route wherever possible
-    \item The System should have guards in place for certain types of roads which are deemed too dangerous to consider
-    \item The System should be able to generate this route quickly
-    \item The System should have a mode for preprocessing to make the route generation even quicker
-    \item When using the same parameters, the route generated using a preprocessed graph and associated algorithms should be the same as that generated by the non-preprocessing based approach
-    \item The System should be easy to use
-    \item \label{nocrashy} The System should not crash, and should give appropriate non crashing errors if user data is determined to be bad
-    \item The parameters for the cost estimation functions should be user definable, but sensible defaults should also be defined
-    \item \label{followpossible}The Route should be output in a format that is easy for the user to follow on a mobile device
-    \item The System should have a system for saving all data from intensive calculation to disk
+    \item \label{item-six}The System should always suggest a route that can be followed while observing all international, national, local laws and all releveant bylaws
+    \item \label{item-seven}The System should suggest a safe route wherever possible
+    \item \label{item-eight}The System should have guards in place for certain types of roads which are deemed too dangerous to consider
+    \item \label{item-nine}The System should be able to generate this route quickly
+    \item \label{item-ten}The System should have a mode for preprocessing to make the route generation even quicker
+    \item \label{item-eleven}When using the same parameters, the route generated using a preprocessed graph and associated algorithms should be the same as that generated by the non-preprocessing based approach
+    \item \label{item-twelve}The System should be easy to use
+    \item \label{nocrashy} \label{item-thirteen}The System should not crash, and should give appropriate non crashing errors if user data is determined to be bad
+    \item \label{item-fourteen} The parameters for the cost estimation functions should be user definable, but sensible defaults should also be defined
+    \item \label{item-fifteen}\label{followpossible}The Route should be output in a format that is easy for the user to follow on a mobile device
+    \item \label{item-sixteen}The System should have a system for saving all data from intensive calculation to disk
 \end{enumerate}
 \end{enumerate}
 \newpage
-\subsection{Specification Justification}
+\section{Specification Justification}
 \begin{enumerate}
     \item Accident Download System
     \begin{enumerate}
@@ -315,10 +330,10 @@ rather than inheritance. Where possible I will use private fields and methods.
     \end{enumerate}
 \end{enumerate}
 \newpage
-\section{Design}
-\subsection{Accident Download System}
+\chapter{Design}
+\section{Accident Download System}
 As outlined in the Specification, this system should be capable of interfacing with the TFL API, downloading the accidents, deciding which ones are relevant, and storing this in a useful format.
-\subsubsection{Pulling from the TFL API}
+\subsection{Pulling from the TFL API}
 \label{Pulling from the TFL API}
 The Transport For London API is an excellent API which can provide information on many different aspects of the Transport For London network. The specific API which I used is the AccidentStats API.
 This API is very simple, you simply request a given year and a JSON object is returned which contains all of the accidents that happened in london that year. These consist of all the accidents that were reported tocdepth
@@ -354,7 +369,7 @@ As the data about accidents that happened in the past is not going to change any
 use that result in the route finder. I used two scripts to do this.\\
 TFL started gathering this data in 2005, and the most recent update was in 2019, so the first script downloads all the data from 2005 to 2019 and save it in a subfolder called \texttt{accidents}.
 The script loops through all the years between 2005 and 2019 and creates a JSON file for that year. \\
-\subsubsection{Parsing the Data}
+\subsection{Parsing the Data}
 The next step is to go through the data from all the years\footnote{I later decided to remove some years see Section \ref{Accident Download System Implementation}}, and save all the accidents that are pertinent to my project. As seen in Figure \ref{Default}, each accident listing has information on casualties,\\
 of which there may be many. As this is a cycling application, I only want data on accidents where at least one of the casualties was a cyclist. The API provides a lot of data, but all that is relevant is
 the latitude and longitude, as well as the severity of the incident. All of this data was ultimately saved to a file called \texttt{output.json}.
@@ -369,8 +384,8 @@ the latitude and longitude, as well as the severity of the incident. All of this
 \label{accident format}
 \end{figure}
 \newpage
-\subsection{Route Finding System}
-\subsubsection{Overview and Design Choices}
+\section{Route Finding System}
+\subsection{Overview and Design Choices}
 
 \begin{figure}[p]
     \begin{center}
@@ -390,11 +405,11 @@ class associated with a given OSM file, and this system could be easily extended
 to extend the system to more cities. The \texttt{GeographicGraph} can contain an instance of the \texttt{ContractableGraph} class, if it has been contracted. If it has not been contracted,
 this class will not exist.\\
 I also created two other classes, \texttt{IntTuple} and \texttt{DoubleTuple}, which are used in priority queues in both the \texttt{GeographicGraph} and \texttt{ContractableGraph} classes.\\
-\subsubsection{Open Street Map Data}
+\subsection{Open Street Map Data}
 Open Street Map is a world map generated by user mapping. It contains multitudes of data on all sorts of mappable things, from the height of stories to the roads that encompass them.
 Files can be in one of two formats; PBF \footnote{Protocol Buffer Format} which is a highly efficient binary format, and XML\footnote{Extensible Markup Language} which is a markdown language. I tried to use a library to parse 
 the PBF file into a Graph, but the main library for that did not work. So instead I decided to parse it manually as an XML file.\\
-\paragraph{Getting the relevant file}
+\subsubsection{Getting the relevant file}
 Openstreetmap has an API for requesting parts of the map, but it does not allow requesting large areas, such as the whole of London. There are many mirrors from which you can download large parts of the world. I decided to use geofabrik \cite{geofabrik}
  because it allows you to download single countries. Next I extracted London from this dataset. This is not strictly necessary, as my program can still deal with large areas such as the whole of the UK, but it does not have accident data for such an area.
  Furthermore it would increase the file size needed on disk and increase the running time of any preprocessing. In order to extract London, I used a GeoJSON\cite{geojsondefinition} file, which is essentially a list of coordinates. I found a GeoJSON file on the internet \cite{geojsonsource}
@@ -409,7 +424,7 @@ $osmium tags-filter london.osm nw/highway -o ways.osm
  \end{verbatim}
  This created a 370MB file called \texttt{ways.osm}. I could have reduced this further by removing the ways that are irrelevant to the program, but I decided to do that in the parser so that it would be
  more easily configurable.
-\paragraph{Parsing the file}
+\subsubsection{Parsing the file}
 Open Street Map files are built out of 3 main elements \cite{osmwikipage}:
 \begin{itemize}
     \item Nodes, which contain longitude and latitude. 
@@ -455,10 +470,10 @@ First there are a ordered list of nodes which are sequentially connected, then t
 function analyzes these tags in order to determine if the road is acceptable for cyclists. The example in Figure  \ref{North Circular}
 would probably not be a good way to include, because the tag \texttt{bicycle} is set to \texttt{no}, and it is a 3 lane road with a 40mph speed limit. The progam uses 
 accident data to work out which roads are dangerous, but some roads will not have many accidents on them simply because they are so dangerous nobody would ever cycle on them. 
-\subparagraph{Parsing the ways}
+\paragraph{Parsing the ways}
 In order to convert from XML to a data representation in memory, we simply iterate through all the subelements in the way. If it is a reference to a node, the id is appended to a ordered list,
 and if it is a tag, it is added to a HashMap so it can be more easily queried. 
-\subparagraph{Deciding what is allowed}
+\paragraph{Deciding what is allowed}
 \begin{itemize}
     \item Highway tag
     \begin{itemize}
@@ -507,12 +522,12 @@ Of course, it will be very easy to iteratively develop this when the whole syste
 It is important to note that this function is designed to be quite open in deciding which ways are safe. It only excludes ways that are plainly very dangerous. The actual decision of where to go based on danger will be made by the
 route finding algorithms.
 \newpage
-\subsubsection{Representing and Querying the Graph}
+\subsection{Representing and Querying the Graph}
 As shown in Figure \ref{uml}, my design uses a class called \texttt{GeographicGraph} to represent London\footnote{Other areas could be represented as well}. There are many graph libraries available to java programs, but creating my own implementation
  will allow me more flexibility in implementation of methods that relate to real world applications. As shown in Figure \ref{uml}, the \texttt{GeographicGraph} class has some major methods that need to be implemented. \texttt{gatherWeights} will 
  read in a accident file in the format specified in Figure \ref{accident format}, and attach the accident to the nearest node in the graph. \texttt{findRoute} will find the best route between two nodes in the graph.
 There will also need to be other functions for maintaining and querying the data structure.
-\paragraph{Representing the Graph}
+\subsubsection{Representing the Graph}
 \label{Rtree}
 There are many possible methods of representing Graphs, such as using an adjacency matrix, or an adjacency list. An adjacency matrix would not work in this case, as the graph is very sparse. An adjacency list could work, but maintaining information about the nodes 
 separately from the adjacency list would be difficult. Instead, my design uses an OOP approach, where every relevant node in the OSM representation is converted into an equivalent node represented by a subclass called \texttt{GeographicNode}.
@@ -532,10 +547,10 @@ function called \texttt{getNearestNode} will convert between coordinates and OSM
     \caption{Rough UML class diagram for the \texttt{GeographicNode} subclass}
     \label{geographicnode}
 \end{figure}
-\paragraph{Creating the Graph}
+\subsubsection{Creating the Graph}
 The \texttt{OpenStreetMap} class deals with parsing the XML, but it has to interface with the \texttt{GeographicGraph} class. When adding new nodes to the Graph, it can simply create a new instance of 
 \texttt{GeographicNode} and add it to the relevant lookup table. For adding an edge, the functionality can be provided by a \texttt{addEdge} function. 
-\subparagraph{Pruning the Graph}
+\paragraph{Pruning the Graph}
 Due to the sequential order of parsing the OSM representation of the Graph, some nodes may be left disconnected because the way that connects them together was not parsed. If the system is asked to find a route from a 
 node that is not connected to any other node, it will of course fail. This could lead to a crash, which would be in contravention of specification point \ref{nocrashy}, or at least a bad user experience, if given an error for seemingly sensible inputs.
 Another problem could be that the Graph might have multiple components, perhaps because access to an area was cut off by safety protocols. Whatever the cause, both of these problems can be averted by removing all nodes that cannot be routed to by one location in the 
@@ -565,7 +580,7 @@ Subroutine Assign(u,v):
 \end{lstlisting}
 The ordering of L is important as it represents the direction in which connections are made in the components. These components are then checked to find the strongly connected components. Each strongly connected component will take a continuous region of L. 
 Implementation of this may require modifying the \texttt{GeographicNode} class to also keep track of incoming connections.  
-\paragraph{Querying the Graph}
+\subsubsection{Querying the Graph}
 \begin{figure}[t]
     \begin{center}
 \begin{lstlisting}
@@ -597,14 +612,14 @@ function Dijkstra(Graph, source, target):
 \end{figure}
 The main query that has to be provided for is finding the shortest route between two points. This functionality can be provided either by a simple Dijkstra's Algorithm implementation, or through a different query for the preprocessed Graph. If the graph has been preprocessed,
 that mode should be used. Otherwise Dijkstra's shortest path algorithm should be used. 
-\subparagraph{Dijkstra's Algorithm}
+\paragraph{Dijkstra's Algorithm}
 Dijkstra's Algorithm\cite{Dijkstra1959} is a immensely popular algorithm for finding routes in graphs. It builds up a tree of nodes that it knows the shortest route to until said tree contains the target node. It does this by iterative "settling" of nodes.
 The known unsettled node that has the shortest route cost to the start node is settled, and all of it's neighbours are added to a list of nodes to be settled. Every node has a tentative \texttt{dist} value and a tentative \texttt{prev} value, defined by the currently known shortest path to that route.
 When the node is settled this value is known to be true. This process is repeated until the algorithm is completed. Pseudocode for Dijkstra's algorithm is shown in Figure \ref{dijkstrapseudo}. A Priority Queue can be used to find the next node to process. This is detailed in the Final Design section.
 \\A variant of Dijkstra's algorithm called A*\cite{Hart1968} uses heuristics to reduce the required search space. The heuristic estimates the distance to the end node, meaning that nodes are vaguely settled in the right direction.
 However this heuristic has to be "admissible" if the shortest possible route is to be found. This means that it never makes overestimates. As the density of accidents cannot be predicted between any point and the end node, the heuristic would be extremely loosely fitting, and would 
 fail to significantly reduce the search space. 
-\subparagraph{Cost Function}
+\paragraph{Cost Function}
 Any route finding algorithm needs a function or set of functions for the cost that would be incurred if going a certain way. If going from node $u$ to node $v$, the function $c$ would be:
 \begin{align*}
     c(u,v) &= w(v) + a\times s(u,v)\times d(u,v) + b\times t(p(u),u,v)\\
@@ -627,18 +642,18 @@ a^2 &= b^2 + c^2 - 2bc\cos{\alpha}\\
 \therefore \cos{\alpha} &= \frac{b^2+c^2-a^2}{2bc}\\
 \therefore \alpha &= \arccos{(\frac{b^2+c^2-a^2}{2bc}})
 \end{align*}
-\subparagraph{Calculating Distances}
+\paragraph{Calculating Distances}
 To calculate real world distances\footnote{Assuming the world is a sphere} from coordinates, Great Circle distance is required. This is the shortest possible distance across the surface of a sphere. The haversine formula\cite{de1795memoria} is one formula that calculates this distance.
 For two points $(\phi_1,\lambda_1)$ and $(\phi_2,\lambda_2)$ where $\phi$ and $\lambda$ are latitude and longitude respectively, the great circle distance can be calculated as
 \[
 d = 2r\arcsin\sqrt{\sin^2{(\frac{\phi_2-\phi_1}{2})}+\cos{\phi_1}\cos{\phi_2}\sin^2{(\frac{\lambda_2-\lambda_1}{2})}}
 \]
 where $r$ is the radius of the earth, so approximately $6371$ km.
-\subsubsection{Preprocessing and Subsequent Querying of the Graph}
+\subsection{Preprocessing and Subsequent Querying of the Graph}
 \label{contractiondesign}
 There are many different methods of route finding\cite{travelplannervideo}. In the Analysis section I considered both Contraction Hierachies\cite{Geisberger2012} and ALT*. Upon further research, I determined that contraction hierachies would be more
 efficient than ALT* in this situation. 
-\paragraph{Contraction Hierachies}
+\subsubsection{Contraction Hierachies}
 In most road networks there is an inherently hierachical structure. When a human plots a long distance route, they don't consider small dirt tracks, and instead choose the best motorway. 
 This is because in most cases motorways are faster. I do not expect the same level of hierachy in figuring out where is cyclable, because cyclists do not have the same limiting factor of the speed limit. However there will still be 
 some routes that are obviously the best, at least to my program.\\
@@ -665,51 +680,51 @@ some routes that are obviously the best, at least to my program.\\
 Contraction hierachies work by the process of iterative contraction of nodes. Some order of contraction is defined, in order of least to most important, and the nodes are contracted in this order.
 When a node is contracted the shortest paths are calculated between all pairs of neighbour nodes. If the shortest path goes through the node to be contracted a new shortcut is added. This maintains all shortest paths in the Graph. 
 An example in an undirected graph is shown in Figure \ref{Contraction}. 
-\subparagraph{Bidirectional Dijkstra Queries}
+\paragraph{Bidirectional Dijkstra Queries}
 The bidirectional variant of dijkstra is a useful speedup technique. A forward search from the source node is interlaced with a backward search from the target node. When a node is settled by both searches all nodes on the shortest path are known to have been settled.
 This variant can reduce the search space, and ideas from this search are used when querying the contracted graph.
-\subparagraph{Querying the Contracted Graph}
+\paragraph{Querying the Contracted Graph}
 When contraction is complete, a new graph is created called G*. This Graph contains all of the nodes and edges in the original graph, as well as all of the shortcuts created during the contraction process.
 All nodes have a new item of information attached to them, known as the hierachy. The first node to be contracted will have a hierachy of 1, and the last node to be contracted will have a hierachy of $n$. 
 Two new graphs can be developed from the hierachy:
 $G*\uparrow$ and $G*\downarrow$. $G*\uparrow$ contains only edges where the hierachy increases, and $G*\downarrow$ contains the opposite. In order to find the shortest path between two nodes $u$ and $v$, a bidirectional search
  consisting of a forward search in $G*\uparrow$ and a backward search in $G*\downarrow$. In an undirected graph this is the same as two forward searches in $G*\uparrow$, but in a directed graph the backwards search must go backwards on directed edges.
 Implementing this will require the \texttt{GeographicNode} equivalent class in \texttt{ContractableGraph} to contain incoming connections and shortcuts. It has been proven\cite{Geisberger2012} that this method of query will leave at least one node on the shortest path settled by both the forward and backward searches.
-\subparagraph{Finding the shortest route}
+\paragraph{Finding the shortest route}
 Once the query is completed, a node on the shortest path will be in the intersection of both searches. The total distance of a route containing a given node is the sum of the distance from the forward search and the distance from the backward search. So to find a node on the shortest path,
 the minimum total distance cost in the intersection of both searches must be found. From there the \texttt{prev} values can be used to backtrack to the start and end of the route. At this point the route will almost certainly contain shortcuts, which must be somehow expanded into their original form.
-\subparagraph{Limitations}
+\paragraph{Limitations}
 When using contraction hierachies, turn costs cannot be as easily integrated because the cost function must be per edge not for collections of edges. It is possible to use a second graph which has the original graph's edges as nodes, but this approach would slow down contraction, and add more complexity to the project.
 Therefore the ability to consider turn costs will only be added to the simple dijkstra searches and any turn costs will be ignored in the preprocessing mode.
-\subparagraph{Node Order}
+\paragraph{Node Order}
 The optimal node ordering is the one that minimises the expected query time. This can be estimated to be the same as the ordering that leads to the lowest total amount of shortcuts being added, which will in turn minimise the expected search space size.
 Finding the best ordering is an NP-hard problem, as it requires simulating every possible node ordering to find which one gives the best results. Instead the contraction algorithm will use a heuristic based approach. There are many heuristics of varying complexity, but the 
 two that my design uses are the difference between the amount of shortcuts added and edges removed, and the number of deleted neighbours. Keeping the number of deleted neighbours low makes sure the contraction is spread out across the graph. When contraction is not uniform, very poor performance is attained.
 The edge difference is essentially a metric of how simple the graph would be after the contraction, so it makes sense to greedily make the graph as simple as possible. The edge difference heuristic can be calculated by simulating the contraction of a node.
 The deleted neighbours heuristic can only go up as the graph is contracted, and the same tends to happen for the difference of edges. Therefore it makes sense to load all of the nodes into a priority queue by their heuristic values,
 and pull out the minimum node. If the heuristic value has changed since the heuristic was placed into the priority queue the node is reinserted into the queue with the new value, otherwise it is contracted.    
-\subparagraph{Optimising Contraction}
+\paragraph{Optimising Contraction}
 In order to contract a node, and compute the edge difference, it needs to be ascertained which pairs of neighbour nodes have their shortest path going through the node. If checking individually for each pair, there would be $O(n^2)$ queries.
 Instead a variant of dijkstra's algorithm can be used, with a stopping condition of settling all the other neighbour nodes instead of just one. These queries might take slightly longer, but they would find all $n$ neighbour nodes.
 Another useful optimisation technique is to refill the priority queue every so often, for instance when lots of re-insertions have to happen. 
-\subsubsection{Saving the work done to disk}
+\subsection{Saving the work done to disk}
 \label{sec:serialization}
 So that intensive workloads such as contracting the graph do not need to be repeated a facility for saving and loading this information must exist.
 It would be possible to write some manual serialisation code, but it is simpler to just save the whole class objects. Kotlin has a 
 fairly easy to use serialisation library that can serialise whole objects to disk\cite{kotlinh}. The standard mode for this is serialising to JSON, but as my files will likely be very large, my design uses the alternate CBOR encoding instead.
 As mentioned previously, \texttt{GeographicNode} objects cannot contain other \texttt{GeographicNode} objects. This is because the kotlin serialiser will get stuck recursively serialising the same nodes. 
 CBOR\footnote{Concise Binary Object Representation} can be used for more consise binary representation of JSON objects.
-\subsubsection{User Interface}
+\subsection{User Interface}
 My design calls for a simple terminal based user interface. Users should be able to load maps and preprocessed data from pre existing files, and trigger addtional preprocessing at different levels. This can be simply implemented by means of a loop where users can choose options or end the program.
-\subsubsection{Route Output}
+\subsection{Route Output}
 In order to fulfil specification point \ref{followpossible}, the route must be output in a format that is not just a list of coordinates. Writing software that can use a route to give turn by turn directions, 
 along with route recalculation when straying off the route is beyond the bounds of this project. However such software does already exist. One example of this is Osmand, an application that uses Open Street Map data to provide a routing application.
 Osmand can generate it's own routes, but it can also be used to follow routes stored in gpx files. GPX files are a subset of XML that can be used to store geographic data such as routes. Many other applications accept these, so a user would not 
 be limited to Osmand. Writing to a GPX file manually would be boring, so my design calls for the use of a library. 
-\subsection{Data Structure Overview}
+\section{Data Structure Overview}
 \newpage
-\section{Technical Implementation}
-\subsection{Overview}
+\chapter{Technical Implementation}
+\section{Overview}
 \begin{figure}[p]
 \begin{verbatim}
 $ tree
@@ -768,7 +783,7 @@ $ tree
 \end{figure}
 Figure \ref{fsystem} shows the complete file system. The \texttt{accidents} subfolder is used to generate \texttt{output.json}, and the \texttt{maps} folder contains different \texttt{osm} files for 
 different areas. All of the \texttt{.py} files are used in the creation of \texttt{output.json} and all of the files in \texttt{src/main/kotlin} are make up the program as a whole, with \texttt{Main.kt} as the entry point.
-\subsection{Accident Download System}
+\section{Accident Download System}
 \label{Accident Download System Implementation}
 As this system only really needs to be run once, I just wrote some hacky python scripts to do this.
 As mentioned in Section \ref{Pulling from the TFL API}, I used a simple script called \texttt{download.py} to pull all the relevant accident data from the TFL API and store it in the \texttt{accidents} folder.
@@ -828,7 +843,7 @@ This generated the plot shown in Figure \ref{chart}. Major roads are clearly vis
 are significantly more accidents in central London then in the suburbs. Central London may be more dangerous, but there are also far more cyclists, and as I cannot get road usage data easily routes will probably be biased against
 central london, possibly causing them to go around. Hopefully, the distance cost will pull routes back towards central London, and they will instead pick between roads for safety on a more local level.
 \newpage
-\subsection{Route Finding System}
+\section{Route Finding System}
 \begin{figure}
     \begin{center}
         \includegraphics[width=10cm]{finaluml.png}
@@ -837,7 +852,7 @@ central london, possibly causing them to go around. Hopefully, the distance cost
     \label{finaluml}
 \end{figure}
 The accident download system of the previous section only really serves to provide the input for this system. This system \textit{is the project}. Figure \ref{finaluml} shows the completed UML diagram. \texttt{IntTuple} and \texttt{DoubleTuple}, which are used in priority queues,  have been added since the class hierachy was designed but overall the structure has remained the same.
-\subsubsection{Parsing Open Street Map Data}
+\subsection{Parsing Open Street Map Data}
 The \texttt{OpenStreetMap} class contains the methods for parsing \texttt{.osm} files and forming a new \texttt{GeographicGraph} class. Some of these methods cannot be called in the init method of \texttt{GeographicGraph} because 
 they operate on the graph after it has been populated by \texttt{parseXML}, so they are placed in the constructor for \texttt{OpenStreetMap}. This constructor calls \texttt{parseXML}.
 \begin{lstlisting}[language=kotlin]
@@ -937,12 +952,12 @@ private fun processWay(way: Element) {
 \end{lstlisting}
 All of the relevant values from \texttt{tags} are converted to string in order to eliminate the need for any null checks. If a way doesn't have a certain tag the value will be \texttt{"null"}, which is of course not in any of the allow or disallow lists.
 If the way is determined to be "safe" or "slow", all the nodes in the way are added to the relevant set in \texttt{cyclableGraph}. 
-\subsection{Graph Representation}
+\section{Graph Representation}
 As shown in Figure \ref{finaluml}, the \texttt{GeographicGraph} class is used to represent London. This is through the \texttt{GeographicNode} inner class, which stores both incoming and outgoing connections as well as the weight of the node. 
-\paragraph{Graph Setup}
+\subsubsection{Graph Setup}
 Once all the nodes and connections have been added and the \texttt{safeNodes} and \texttt{slowNodes} sets have been filled up by the parsing functions in \texttt{OpenStreetMap}, some other functions need to be run to set up the graph for operations and otherwise clean up.
 These functions are called from the intialisation method of \texttt{OpenStreetMap}. 
-\subparagraph{Graph Pruning}
+\paragraph{Graph Pruning}
 The first function called is \texttt{pruneDisconnected}. This function ensures that the graph is strongly connected by finding the largest strongly connected component and deleting all nodes not in it. This ensures that the program can easily 
 conform to Specification Point \ref{nocrashy}, as it ensures that it is possible to find a route between any two points in the graph. 
 \begin{lstlisting}[language=kotlin]
@@ -1005,7 +1020,7 @@ I had to slightly modify Kosaraju's Algorithm\cite{wikipedia_2022}, as it called
 solution was clearly going to run out of stack depth or stack space. Therefore I modified it to use a iterative approach, using the stack \texttt{searchStack}, and the list \texttt{postOrder}.\\ In order to avoid rewriting the subfunction \texttt{getPostOrderTraversal} for the case in which the search is performed backwards, I passed in a lambda function that is used to find either outgoing or incoming neighbours. 
 Once all the strongly connected components are placed in the HashMap \texttt{components}, the largest one can be quickly ascertained. From there, all that is required is the actual pruning of the process.
 First, the \texttt{vertices} are filtered for nodes that are in the largest strongly connected component, then all of these vertices have their connections filtered to ensure that traversal algorithms do not attempt to lookup vertices which no longer exist.
-\subparagraph{Setting up the R*Tree}
+\paragraph{Setting up the R*Tree}
 As discussed in Section \ref{Rtree}, I used an R*Tree to facilitate fast lookup of nodes from nearby coordinates. The library I used\cite{rtree} supports both iterative loading of the rtree and bulk loading. Bulk loading is faster and can result in a 
 more efficient R*Tree, so \texttt{setupRTree} uses that. The R*Tree generated is visualised in Figure \ref{rvis}.
 \begin{figure}[t]
@@ -1029,7 +1044,7 @@ fun setupRTree() {
 \end{lstlisting}
 The function also includes a safety check to make sure that the R*Tree has not been loaded before, as if it had the entries would be added twice. 
 \newpage
-\subparagraph{Gathering Weights}
+\paragraph{Gathering Weights}
 This system simply reads the output from the Accident Download System, and attaches weights to the nearest node to every accident. I decided on the arbitrary scoring system of 1 point for Slight accidents, 2 points for Severe accidents, and 3 points for Fatal accidents. 
 \begin{lstlisting}[language=kotlin]
 fun gatherWeights() {
@@ -1071,7 +1086,7 @@ private fun getNearestNode(latitude: Double, longitude: Double): Long {
 The \texttt{InvalidParameterException} is thrown by \texttt{getNearestNode} if there is no node within 0.005 degrees. This is roughly half a kilometer, so all reasonable ranges of nodes can be found. Selecting a smaller value for
  the maximum search distance makes the query faster. In \texttt{gatherWeights} this can be safely ignored as while a few coordinates might be too far away from nodes the vast majority will not be.\\
 Finally, all known safe nodes have their weights set to 0. This completes the graph setup.
-\paragraph{Graph Queries}
+\subsubsection{Graph Queries}
 \texttt{GeographicGraph} has 3 main methods that will be queried by the user facing code. These are \texttt{getRandomId}, \texttt{getNearestNode}, and \texttt{findRoute}. \texttt{getRandomId} just returns a random vertice id from the vertices HashMap, and \texttt{getNearestNode} has already been explained.
 \texttt{findRoute} provides functionality for deciding which route finding method to use, then executing it. In my design I allowed only one instance of \texttt{contractedGraph}, but when implementing I decided to change this to allow as many contractions as wanted. This was implemented through a HashMap that holds all the instances of \texttt{contractedGraph}, which are used to find routes when matching parameters are given. 
 So the \texttt{findRoute} function calls the corresponding function in the preprocessed graph, or the private function \texttt{findRouteNonContracted}. This is shown below.
@@ -1160,8 +1175,8 @@ class DoubleTuple(val id : Long, val dist : Double) : Comparable<DoubleTuple>
  }
 \end{lstlisting}
 \newpage
-\subsection{Graph Contraction and Querying}
-\paragraph{Graph Contraction}
+\section{Graph Contraction and Querying}
+\subsubsection{Graph Contraction}
 \begin{figure}[t]
 \begin{center}
 \includegraphics[width=8cm]{ContractableNode.png}
@@ -1216,7 +1231,7 @@ fun contractGraph(inputGraph: GeographicGraph) {
     }
 }
 \end{lstlisting}
-As mentioned in Section \ref{contractiondesign}, this function uses a priority queue and heuristics to determine which node to contract next. If the heuristic of the item has changed since being inserted into the queue,
+As mentioned in Section \ref{contractiondesign}, this function uses a priority queue and heuristics to determine which node to contract next. The items in the Queue are held in \texttt{IntTuple} objects, which are the same as \texttt{DoubleTuple} objects, but use integers instead of doubles.If the heuristic of the item has changed since being inserted into the queue,
 the item is reinserted to the queue. If this happens 40 times in a row, the entire queue is recalculated. When all the nodes are contracted, they have their shortcut and normal connections unioned together. This is further preprocessing for later route finding, as before implementing this
 finding unions of these sets was taking up the majority of the time used to find routes. \\
 The heuristic function \texttt{getHeuristicValue} is the sum of the edge difference and the number of deleted nodes connected to a node considered for contraction. It calls \texttt{getShortest} for every incoming node to the given node. \texttt{getShortest} gives the list of outgoing nodes such that the shortest path between the incoming and outgoing node goes through the given node. 
@@ -1278,7 +1293,7 @@ private fun getShortest(
 \end{lstlisting}
 In order to speed up the contraction process, a settled node limit of 10000 is imposed for estimating the edge difference, but not for the actual contraction of nodes, as this limit would result in unecessary shortcuts.
 \newpage
-\paragraph{Graph Querying}
+\subsubsection{Graph Querying}
 Once the graph has been sucessfully contracted, all that remains is to allow for route finding. 
 The \texttt{findRoute} function implements a complete bidirectional dijkstra search in the reduced search space to find a node that is known to be on the minimum path.
 \begin{lstlisting}[language=kotlin]
@@ -1411,7 +1426,7 @@ private fun unpackRoute(route: MutableList<Long>): MutableList<Long> {
 }
 \end{lstlisting}
 \texttt{unpackRoute} operates in a similar manner to a bubble sort, repeatedly iterating through the list until it is known that it contains no shortcuts. 
-\subsection{User Interface}
+\section{User Interface}
 The user interface is written in the \texttt{Main.kt} file. It is defensively programmed, to protect from user error, and the code is shown in the Appendix. It allows for an input loop. An example usage is shown in Figure \ref{interface}.
 \begin{figure}[t]
 \begin{center}
@@ -1421,7 +1436,7 @@ The user interface is written in the \texttt{Main.kt} file. It is defensively pr
 \label{interface}
 \end{figure}
 \newpage
-\subsection{Serialisation}
+\section{Serialisation}
 In order to serialise objects of a certain class in kotlin, the class and all of the properties of the class must be serialisable. Kotlin data structures, like HashMaps and HashSets are all serialisable.
 The only data structure that was not serialisable was the R*Tree, so this had to be marked as Transient so that the serialiser would not complain, and then regenerated by calling \texttt{setupRTree} upon deserialisation.
 \begin{lstlisting}[language=kotlin]
@@ -1454,17 +1469,25 @@ init {
 }
 \end{lstlisting}
 \newpage
-\section{Testing}
+\chapter{Testing}
 I employed 3 major strategies to test my Project.
 \begin{enumerate}
     \item Comprehensive unit testing. Tests are defined for every major function in code, and run regularly. This helps ascertain that the code works, and also helps to ensure that bugs are not introduced during development.
     \item Human Testing. Essentially a human uses the program and ascertains that the program complies with specification points and does not crash when the user does unexpected things.
     \item Performance Testing. In order to ascertain that the program runs at an acceptable speed, automated performance tests measure the speed of certain functions.
 \end{enumerate}
-\subsection{Creating a test area}
+\section{Creating a test area}
 Some operations, especially preprocesing, take a long time to execute. As the unit tests will be run many times, it makes sense to define a smaller test area for some operations. I created a GeoJSON file, and used it to cut out a smaller area of london, called \texttt{testarea.osm}.
-\subsection{Unit Testing}
+\section{Unit Testing}
 The basic idea of unit testing is to test that all functions do what they should do. Where possible, I manually worked out what they should do and set this as the condition for the test.
+\begin{figure}[t]
+    \begin{center}
+        \includegraphics[height=4cm]{test.png}
+        \includegraphics[height=4cm]{coverage.png}
+    \end{center}
+    \caption{Unit tests running successfully, as well as code coverage stats}
+    \label{testsuccess}
+\end{figure}
 \small{
 \begin{longtable}[c]{|c|p{6cm}|c|c|}
     \hline
@@ -1513,25 +1536,58 @@ The basic idea of unit testing is to test that all functions do what they should
     \texttt{MainKt.writeObjectToDisk} & Writes an OSM file to disk, reads it back, and checks that the size of the graphs is the same & Equals & \checkmark\\
 \end{longtable}
 }
-\begin{figure}[t]
-    \begin{center}
-        \includegraphics[height=4cm]{test.png}
-        \includegraphics[height=4cm]{coverage.png}
-    \end{center}
-    \caption{Unit tests running successfully, as well as code coverage stats}
-    \label{testsuccess}
-\end{figure}
-As shown in Figure \ref{testsuccess}, all of these tests ran successfully. 
-\subsection{Human Testing}      
-\subsection{Performance Testing}
-\section{Evaluation}
+As shown in Figure \ref{testsuccess}, all of these tests ran successfully, and had relatively high code coverage considering that most of the lines in \texttt{Main.kt}
+cannot be easily unit tested as they rely on user input. 
+\section{Human Testing}
+I also used human testing to make sure that the program runs as specified. These tests mostly check that code does not break when given difficult inputs, but also that it conforms to other specification points.
+I used two types of tests: Normal tests, where everything should work, and breaking tests, where the program should not crash and give an expected output. 
+\small{
+\begin{longtable}[c]{|c|p{6cm}|c|c|c|}
+    \hline
+    \multicolumn{5}{| c |}{Human Testing Table}\\
+    \hline
+    Covered Specification Point & Description & Type & Evidence & Works?\\
+    \hline
+    \endfirsthead
+    \hline
+    \endfoot
+   
+    \hline
+    \multicolumn{5}{|c|}{Continuation of Human Testing Table}\\
+    \hline
+    Covered Specification Point & Description & Type & Evidence & Works?\\
+    \hline
+    \endhead
+    \ref{downloadaccidents}  & Run the \texttt{download.py} script and check that accidents are properly stored. & Normal & & \checkmark\\
+    \hline
+    \ref{parseaccidents} \& \ref{storeaccidents} & Run \texttt{parse.py} and verify that the \texttt{output.json} file is created correctly using \texttt{display.py} & Normal & & \checkmark\\
+    \hline
+    \ref{item-one} \& \ref{item-two} \& \ref{item-three} \& \ref{item-four} & Run the program, and select a \texttt{.osm} file to parse, and verify it is parsed correctly by finding a route between two points. & Normal & & \checkmark\\
+    \hline
+    \ref{item-five} \& \ref{item-six} \& \ref{item-seven} \& \ref{item-eight} \& \ref{item-fifteen}& Find a route between two points, and evaluate whether following it would be safe, legal, \&possible, by following the route. & Normal & Appendix \ref{Real World Testing} & \checkmark\\
+    \hline
+    \ref{item-ten} & Load a \texttt{.osm} file, contract the graph, then execute and check a \texttt{findRoute} query on that graph. & Normal & & \checkmark\\
+    \hline
+    \ref{item-eleven} & Run a contracted and non contracted query on the same graph, and verify that they overlap. & Normal & & \checkmark\\
+    \hline
+    \ref{item-thirteen} \& \ref{item-fourteen} & Attempt to cause a crash by inputting illegal inputs. Verify that this fails & Illegal & & \checkmark\\
+    \hline
+    \ref{item-sixteen} & Create and then save a map. Load the map back into memory and verify that route finding on it still works & Normal & & \checkmark
+\end{longtable}
+}
+\section{Performance Testing}
+\chapter{Evaluation}
 \newpage
 \appendix
-\section{Real World Testing}
+\appendixpage
+\addappheadtotoc
+\chapter{Evidence for Human Testing}
+\chapter{Real World Testing}
+\label{Real World Testing}
 In order to  
-\section{Program Source Code}
+\chapter{Program Source Code}
 \newpage
-\addcontentsline{toc}{section}{References}
+\addcontentsline{toc}{chapter}{References}
 \printbibliography
 \label{end}
 \end{document}     

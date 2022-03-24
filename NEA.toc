@@ -1,69 +1,143 @@
-\contentsline {section}{\numberline {1}Analysis}{4}{section.1}%
-\contentsline {subsection}{\numberline {1.1}Problem Area}{4}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}Client}{4}{subsection.1.2}%
-\contentsline {subsection}{\numberline {1.3}Similar Systems}{6}{subsection.1.3}%
-\contentsline {subsection}{\numberline {1.4}Features}{6}{subsection.1.4}%
-\contentsline {subsubsection}{\numberline {1.4.1}Map data}{6}{subsubsection.1.4.1}%
-\contentsline {subsubsection}{\numberline {1.4.2}Accident Data}{6}{subsubsection.1.4.2}%
-\contentsline {subsubsection}{\numberline {1.4.3}Traffic Data}{7}{subsubsection.1.4.3}%
-\contentsline {subsubsection}{\numberline {1.4.4}Finding the shortest route}{7}{subsubsection.1.4.4}%
-\contentsline {subsection}{\numberline {1.5}Class Layout}{8}{subsection.1.5}%
-\contentsline {subsection}{\numberline {1.6}Critical Path}{8}{subsection.1.6}%
-\contentsline {subsection}{\numberline {1.7}Specification}{9}{subsection.1.7}%
-\contentsline {subsection}{\numberline {1.8}Specification Justification}{10}{subsection.1.8}%
-\contentsline {section}{\numberline {2}Design}{11}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Accident Download System}{11}{subsection.2.1}%
-\contentsline {subsubsection}{\numberline {2.1.1}Pulling from the TFL API}{11}{subsubsection.2.1.1}%
-\contentsline {subsubsection}{\numberline {2.1.2}Parsing the Data}{11}{subsubsection.2.1.2}%
-\contentsline {subsection}{\numberline {2.2}Route Finding System}{13}{subsection.2.2}%
-\contentsline {subsubsection}{\numberline {2.2.1}Overview and Design Choices}{13}{subsubsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.2}Open Street Map Data}{13}{subsubsection.2.2.2}%
-\contentsline {paragraph}{Getting the relevant file}{13}{section*.10}%
-\contentsline {paragraph}{Parsing the file}{15}{section*.11}%
-\contentsline {subparagraph}{Parsing the ways}{16}{section*.13}%
-\contentsline {subparagraph}{Deciding what is allowed}{16}{section*.14}%
-\contentsline {subsubsection}{\numberline {2.2.3}Representing and Querying the Graph}{18}{subsubsection.2.2.3}%
-\contentsline {paragraph}{Representing the Graph}{18}{section*.15}%
-\contentsline {paragraph}{Creating the Graph}{18}{section*.17}%
-\contentsline {subparagraph}{Pruning the Graph}{18}{section*.18}%
-\contentsline {paragraph}{Querying the Graph}{19}{figure.caption.20}%
-\contentsline {subparagraph}{Dijkstra's Algorithm}{20}{section*.21}%
-\contentsline {subparagraph}{Cost Function}{21}{section*.22}%
-\contentsline {subparagraph}{Calculating Distances}{21}{section*.24}%
-\contentsline {subsubsection}{\numberline {2.2.4}Preprocessing and Subsequent Querying of the Graph}{21}{subsubsection.2.2.4}%
-\contentsline {paragraph}{Contraction Hierachies}{22}{section*.25}%
-\contentsline {subparagraph}{Bidirectional Dijkstra Queries}{22}{section*.27}%
-\contentsline {subparagraph}{Querying the Contracted Graph}{22}{section*.28}%
-\contentsline {subparagraph}{Finding the shortest route}{22}{section*.29}%
-\contentsline {subparagraph}{Limitations}{23}{section*.30}%
-\contentsline {subparagraph}{Node Order}{23}{section*.31}%
-\contentsline {subparagraph}{Optimising Contraction}{23}{section*.32}%
-\contentsline {subsubsection}{\numberline {2.2.5}Saving the work done to disk}{23}{subsubsection.2.2.5}%
-\contentsline {subsubsection}{\numberline {2.2.6}User Interface}{23}{subsubsection.2.2.6}%
-\contentsline {subsubsection}{\numberline {2.2.7}Route Output}{24}{subsubsection.2.2.7}%
-\contentsline {subsection}{\numberline {2.3}Data Structure Overview}{24}{subsection.2.3}%
-\contentsline {section}{\numberline {3}Technical Implementation}{25}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Overview}{25}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Accident Download System}{25}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Route Finding System}{28}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Parsing Open Street Map Data}{28}{subsubsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.4}Graph Representation}{30}{subsection.3.4}%
-\contentsline {paragraph}{Graph Setup}{31}{section*.36}%
-\contentsline {subparagraph}{Graph Pruning}{31}{section*.37}%
-\contentsline {subparagraph}{Setting up the R*Tree}{32}{section*.38}%
-\contentsline {subparagraph}{Gathering Weights}{33}{section*.40}%
-\contentsline {paragraph}{Graph Queries}{34}{section*.41}%
-\contentsline {subsection}{\numberline {3.5}Graph Contraction and Querying}{36}{subsection.3.5}%
-\contentsline {paragraph}{Graph Contraction}{36}{figure.caption.43}%
-\contentsline {paragraph}{Graph Querying}{39}{section*.44}%
-\contentsline {subsection}{\numberline {3.6}User Interface}{41}{subsection.3.6}%
-\contentsline {subsection}{\numberline {3.7}Serialisation}{42}{subsection.3.7}%
-\contentsline {section}{\numberline {4}Testing}{43}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Creating a test area}{43}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Unit Testing}{43}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Human Testing}{44}{subsection.4.3}%
-\contentsline {subsection}{\numberline {4.4}Performance Testing}{44}{subsection.4.4}%
-\contentsline {section}{\numberline {5}Evaluation}{44}{section.5}%
-\contentsline {section}{\numberline {A}Real World Testing}{45}{appendix.A}%
-\contentsline {section}{\numberline {B}Program Source Code}{45}{appendix.B}%
-\contentsline {section}{References}{46}{appendix.B}%
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {1}Analysis}{4}{chapter.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.1}Problem Area}{4}{section.1.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.2}Client}{4}{section.1.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.3}Similar Systems}{5}{section.1.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.4}Features}{6}{section.1.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.4.1}Map data}{6}{subsection.1.4.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.4.2}Accident Data}{6}{subsection.1.4.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.4.3}Traffic Data}{7}{subsection.1.4.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {1.4.4}Finding the shortest route}{7}{subsection.1.4.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.5}Class Layout}{7}{section.1.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.6}Critical Path}{8}{section.1.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.7}Specification}{9}{section.1.7}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {1.8}Specification Justification}{10}{section.1.8}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {2}Design}{11}{chapter.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.1}Accident Download System}{11}{section.2.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.1.1}Pulling from the TFL API}{11}{subsection.2.1.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.1.2}Parsing the Data}{11}{subsection.2.1.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.2}Route Finding System}{12}{section.2.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.1}Overview and Design Choices}{12}{subsection.2.2.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.2}Open Street Map Data}{14}{subsection.2.2.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.2.1}Getting the relevant file}{14}{subsubsection.2.2.2.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.2.2}Parsing the file}{14}{subsubsection.2.2.2.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.2.2.1}Parsing the ways}{15}{paragraph.2.2.2.2.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.2.2.2}Deciding what is allowed}{15}{paragraph.2.2.2.2.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.3}Representing and Querying the Graph}{18}{subsection.2.2.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.3.1}Representing the Graph}{18}{subsubsection.2.2.3.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.3.2}Creating the Graph}{18}{subsubsection.2.2.3.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.3.2.1}Pruning the Graph}{18}{paragraph.2.2.3.2.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.3.3}Querying the Graph}{20}{subsubsection.2.2.3.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.3.3.1}Dijkstra's Algorithm}{20}{paragraph.2.2.3.3.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.3.3.2}Cost Function}{20}{paragraph.2.2.3.3.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.3.3.3}Calculating Distances}{21}{paragraph.2.2.3.3.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.4}Preprocessing and Subsequent Querying of the Graph}{21}{subsection.2.2.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {2.2.4.1}Contraction Hierachies}{22}{subsubsection.2.2.4.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.4.1.1}Bidirectional Dijkstra Queries}{22}{paragraph.2.2.4.1.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.4.1.2}Querying the Contracted Graph}{22}{paragraph.2.2.4.1.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.4.1.3}Finding the shortest route}{22}{paragraph.2.2.4.1.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.4.1.4}Limitations}{23}{paragraph.2.2.4.1.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.4.1.5}Node Order}{23}{paragraph.2.2.4.1.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {2.2.4.1.6}Optimising Contraction}{23}{paragraph.2.2.4.1.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.5}Saving the work done to disk}{23}{subsection.2.2.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.6}User Interface}{24}{subsection.2.2.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {2.2.7}Route Output}{24}{subsection.2.2.7}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {2.3}Data Structure Overview}{24}{section.2.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {3}Technical Implementation}{25}{chapter.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.1}Overview}{25}{section.3.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.2}Accident Download System}{25}{section.3.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.3}Route Finding System}{28}{section.3.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {3.3.1}Parsing Open Street Map Data}{28}{subsection.3.3.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.4}Graph Representation}{31}{section.3.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {3.4.0.1}Graph Setup}{31}{subsubsection.3.4.0.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {3.4.0.1.1}Graph Pruning}{31}{paragraph.3.4.0.1.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {3.4.0.1.2}Setting up the R*Tree}{32}{paragraph.3.4.0.1.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {paragraph}{\numberline {3.4.0.1.3}Gathering Weights}{33}{paragraph.3.4.0.1.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {3.4.0.2}Graph Queries}{34}{subsubsection.3.4.0.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.5}Graph Contraction and Querying}{36}{section.3.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {3.5.0.1}Graph Contraction}{36}{subsubsection.3.5.0.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {subsubsection}{\numberline {3.5.0.2}Graph Querying}{39}{subsubsection.3.5.0.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.6}User Interface}{41}{section.3.6}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {3.7}Serialisation}{42}{section.3.7}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {4}Testing}{43}{chapter.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.1}Creating a test area}{43}{section.4.1}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.2}Unit Testing}{43}{section.4.2}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.3}Human Testing}{44}{section.4.3}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {4.4}Performance Testing}{44}{section.4.4}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {5}Evaluation}{46}{chapter.5}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{Appendices}{48}{section*.22}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {A}Evidence for Human Testing}{48}{appendix.A}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {B}Real World Testing}{49}{appendix.B}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{\numberline {C}Program Source Code}{50}{appendix.C}%
+\defcounter {refsection}{0}\relax 
+\contentsline {chapter}{References}{51}{appendix.C}%
