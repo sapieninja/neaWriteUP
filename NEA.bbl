@@ -560,6 +560,22 @@
       \verb https://kotlinlang.org/docs/serialization.html
       \endverb
     \endentry
+    \entry{google}{misc}{}
+      \list{publisher}{1}{%
+        {Google}%
+      }
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Google}
+      \field{title}{Overview ; protocol buffers ; google developers}
+      \verb{urlraw}
+      \verb https://developers.google.com/protocol-buffers/docs/overview
+      \endverb
+      \verb{url}
+      \verb https://developers.google.com/protocol-buffers/docs/overview
+      \endverb
+    \endentry
   \enddatalist
 \endrefsection
 \endinput
